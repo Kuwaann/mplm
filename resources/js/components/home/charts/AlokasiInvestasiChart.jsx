@@ -15,13 +15,15 @@ import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
+    ChartLegend,
+    ChartLegendContent,
 } from "@/components/ui/chart"
 
 export const description = "A simple pie chart"
 
 const chartData = [
-    { tipe: "Kapital", jumlah: 275, fill: "var(--color-kapital)" },
-    { tipe: "Non-kapital", jumlah: 200, fill: "var(--color-nonKapital)" },
+    { tipe: "kapital", jumlah: 275, fill: "var(--color-kapital)" },
+    { tipe: "nonKapital", jumlah: 200, fill: "var(--color-nonKapital)" },
 ]
 
 const chartConfig = {
@@ -42,7 +44,7 @@ export function AlokasiInvestasiChart() {
                 <CardTitle>Alokasi investasi</CardTitle>
                 <CardDescription>Perbandingan investasi kapital dan non-kapital</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 pb-0">
+            <CardContent className="flex-1">
                 <ChartContainer
                     config={chartConfig}
                     className="mx-auto aspect-square max-h-[250px]"
@@ -53,14 +55,13 @@ export function AlokasiInvestasiChart() {
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie data={chartData} dataKey="jumlah" nameKey="tipe" />
+                        <ChartLegend
+                            content={<ChartLegendContent nameKey="tipe" />}
+                            className="-translate-y-2  gap-3  *:justify-center"
+                        />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col gap-2 text-sm">
-                <div className="flex items-center gap-2 leading-none font-medium">
-                    Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-                </div>
-            </CardFooter>
         </Card>
     )
 }
