@@ -40,9 +40,9 @@ export function AppSidebar() {
     const { state } = useSidebar();
 
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar variant="inset" collapsible="icon">
             <SidebarHeader className="flex flex-row justify-between">
-                {state !== 'collapsed' && <h1 className="text-md font-medium">Dasbor</h1>}
+                {state !== 'collapsed' && <h1 className="text-md font-medium">Petrostream</h1>}
                 <SidebarTrigger />
             </SidebarHeader>
             <SidebarContent>
@@ -70,7 +70,7 @@ export function AppSidebar() {
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
-
+                <Separator />
                 {state !== 'collapsed' &&
                     <Collapsible defaultOpen className="group/collapsible">
                         <SidebarGroup>
@@ -103,10 +103,10 @@ export function AppSidebar() {
                 }
             </SidebarContent>
             <Separator />
-            <SidebarFooter className="p-0">
+            <SidebarFooter className="p-0 pt-2">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="flex items-center justify-start gap-3 flex-1 px-4 py-4 rounded-none">
+                        <Button variant="ghost" className="flex items-center justify-start gap-3 flex-1 px-2 py-4">
                             <Avatar>
                                 <AvatarImage src="https://github.com/shadcn.png" />
                                 <AvatarFallback>CN</AvatarFallback>
@@ -143,7 +143,6 @@ export function AppSidebar() {
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>
-
             </SidebarFooter>
         </Sidebar>
     )
