@@ -20,46 +20,39 @@ export default function CardsSection() {
             <div className="flex gap-3">
                 <Card className="flex-1">
                     <CardHeader>
-                        <CardTitle className="">Total proyek</CardTitle>
-                        <CardAction>
-                            <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
-                        </CardAction>
+                        <CardTitle className="text-xs opacity-50">Total proyek</CardTitle>
                     </CardHeader>
-                    <CardContent className="mt-auto ">
+                    <CardContent className="mt-auto flex flex-row gap-3 items-center">
                         <p className='text-xl font-medium'>24</p>
+                        <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
                     </CardContent>
                 </Card>
                 <Card className="flex-1">
                     <CardHeader>
-                        <CardTitle className="">Total produksi kumulatif</CardTitle>
-                        <CardAction>
-                            <Badge variant="outline"><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
-                        </CardAction>
+                        <CardTitle className="text-xs opacity-50">Total produksi kumulatif</CardTitle>
                     </CardHeader>
-                    <CardContent className="mt-auto">
+                    <CardContent className="mt-auto flex flex-row gap-3 items-center">
                         <p className='text-xl font-medium'>0 Mbbl</p>
+                        <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
                     </CardContent>
                 </Card>
                 <Card className="flex-1">
                     <CardHeader>
-                        <CardTitle className="">Total pendapatan</CardTitle>
-                        <CardAction>
-                            <Badge variant="outline"><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
-                        </CardAction>
+                        <CardTitle className="text-xs opacity-50">Total pendapatan</CardTitle>
                     </CardHeader>
-                    <CardContent className="mt-auto">
-                        <p className='text-sm font-medium'>Rp 0,00</p>
+                    <CardContent className="mt-auto flex flex-row gap-3 items-center">
+                        <p className='text-xl font-medium'>Rp 0,00</p>
+                        <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
                     </CardContent>
                 </Card>
                 <Card className="flex-1">
                     <CardHeader>
-                        <CardTitle className="">Total Net Cash Flow</CardTitle>
-                        <CardAction>
-                            <Badge variant="outline"><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
-                        </CardAction>
+                        <CardTitle className="text-xs opacity-50">Total Net Cash Flow</CardTitle>
                     </CardHeader>
-                    <CardContent className="mt-auto">
-                        <p className='text-sm font-medium'>Rp 0,00</p>
+                    <CardContent className="mt-auto flex flex-row gap-3 items-center">
+                        <p className='text-xl font-medium'>Rp 0,00</p>
+                        <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
+
                     </CardContent>
                 </Card>
             </div>

@@ -1,6 +1,4 @@
 "use client"
-
-import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
@@ -10,12 +8,14 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
+    CardAction
 } from "@/components/ui/card"
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
+import RentangWaktuSelect from "@/components/RentangWaktuSelect"
 
 export const description = "A multiple line chart"
 
@@ -41,13 +41,16 @@ const chartConfig = {
 
 export function TrenProduksiIncomeChart() {
     return (
-        <Card className="flex-3" >
+        <Card className="flex flex-col flex-3" >
             <CardHeader>
                 <CardTitle>Tren produksi dan pendapatan tahunan</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardDescription>Menampilkan volume produksi (Mbbl) vs pendapatan kotor ($M)</CardDescription>
+                <CardAction>
+                    <RentangWaktuSelect />
+                </CardAction>
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig} className="w-full h-[250px]">
+            <CardContent className="flex-1">
+                <ChartContainer config={chartConfig} className="h-full w-full">
                     <LineChart
                         accessibilityLayer
                         data={chartData}

@@ -35,9 +35,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Link, usePage } from '@inertiajs/react';
 
 export function AppSidebar() {
     const { state } = useSidebar();
+    const { url } = usePage();
+    const menus = [
+        {
+            name: 'Beranda',
+            href: '/'
+        },
+        {
+            name: 'Kelola Proyek',
+            href: '/kelola-proyek'
+        }
+    ]
 
     return (
         <Sidebar variant="inset" collapsible="icon">
@@ -50,7 +62,7 @@ export function AppSidebar() {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <a href="" className="text-sm"><House />Beranda</a>
+                                <Link href="/" className="text-sm"><House />Beranda</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -61,11 +73,11 @@ export function AppSidebar() {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <a href="" className="text-sm">
+                                <Link href={menus[1].href} className="text-sm">
                                     <Workflow />
                                     Kelola proyek
                                     <SidebarMenuBadge>24</SidebarMenuBadge>
-                                </a>
+                                </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -84,16 +96,16 @@ export function AppSidebar() {
                                 <SidebarMenu>
                                     <SidebarMenuItem>
                                         <SidebarMenuButton asChild>
-                                            <a href="" className="text-sm truncate">Proyek 1</a>
+                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
                                         </SidebarMenuButton>
                                         <SidebarMenuButton asChild>
-                                            <a href="" className="text-sm truncate">Proyek 1</a>
+                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
                                         </SidebarMenuButton>
                                         <SidebarMenuButton asChild>
-                                            <a href="" className="text-sm truncate">Proyek 1</a>
+                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
                                         </SidebarMenuButton>
                                         <SidebarMenuButton asChild>
-                                            <a href="" className="text-sm truncate">Proyek 1</a>
+                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 </SidebarMenu>
