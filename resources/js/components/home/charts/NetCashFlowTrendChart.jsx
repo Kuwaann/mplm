@@ -1,4 +1,6 @@
 "use client"
+
+import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
@@ -16,16 +18,17 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import RentangWaktuSelect from "@/components/RentangWaktuSelect"
+import { BandingkanDropdown } from "../BandingkanDropdown"
 
-export const description = "A multiple line chart"
+export const description = "A line chart"
 
 const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
+    { month: "January", desktop: 186 },
+    { month: "February", desktop: 305 },
+    { month: "March", desktop: 237 },
+    { month: "April", desktop: 73 },
+    { month: "May", desktop: 209 },
+    { month: "June", desktop: 214 },
 ]
 
 const chartConfig = {
@@ -33,23 +36,20 @@ const chartConfig = {
         label: "Desktop",
         color: "var(--chart-1)",
     },
-    mobile: {
-        label: "Mobile",
-        color: "var(--chart-2)",
-    },
 }
 
-export function TrenProduksiIncomeChart() {
+export function NetCashFlowTrendChart() {
     return (
-        <Card className="flex flex-col flex-3" >
+        <Card className="w-full">
             <CardHeader>
-                <CardTitle>Tren produksi dan pendapatan tahunan</CardTitle>
-                <CardDescription>Menampilkan volume produksi (Mbbl) vs pendapatan kotor ($M)</CardDescription>
-                <CardAction>
+                <CardTitle>Tren Net Cash Flow</CardTitle>
+                <CardDescription>Menampilkan fluktuasi arus kas bersih proyek sepanjang periode terpilih</CardDescription>
+                <CardAction className="flex flex-row gap-3">
+                    <BandingkanDropdown />
                     <RentangWaktuSelect />
                 </CardAction>
             </CardHeader>
-            <CardContent className="flex-1">
+            <CardContent>
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
                     <LineChart
                         accessibilityLayer
@@ -67,18 +67,14 @@ export function TrenProduksiIncomeChart() {
                             tickMargin={8}
                             tickFormatter={(value) => value.slice(0, 3)}
                         />
-                        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                        <Line
-                            dataKey="desktop"
-                            type="monotone"
-                            stroke="var(--color-desktop)"
-                            strokeWidth={2}
-                            dot={false}
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
                         />
                         <Line
-                            dataKey="mobile"
-                            type="monotone"
-                            stroke="var(--color-mobile)"
+                            dataKey="desktop"
+                            type="natural"
+                            stroke="var(--color-desktop)"
                             strokeWidth={2}
                             dot={false}
                         />

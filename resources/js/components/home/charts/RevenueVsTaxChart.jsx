@@ -10,12 +10,14 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
+    CardAction
 } from "@/components/ui/card"
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
+import RentangWaktuSelect from "@/components/RentangWaktuSelect"
 
 export const description = "A multiple bar chart"
 
@@ -39,15 +41,18 @@ const chartConfig = {
     },
 }
 
-export function OpexVsTaxChart() {
+export function RevenueVsTaxChart() {
     return (
-        <Card className="flex-3">
+        <Card className="flex flex-col flex-1">
             <CardHeader>
-                <CardTitle>Opex vs Tax</CardTitle>
+                <CardTitle>Pendapatan vs Opex</CardTitle>
                 <CardDescription>January - June 2024</CardDescription>
+                <CardAction className="flex flex-row gap-3">
+                    <RentangWaktuSelect />
+                </CardAction>
             </CardHeader>
-            <CardContent >
-                <ChartContainer config={chartConfig} className="h-[250px] w-full">
+            <CardContent className="flex-1 flex flex-col">
+                <ChartContainer config={chartConfig} className="flex-1 w-full min-h-[250px]">
                     <BarChart accessibilityLayer data={chartData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
