@@ -13,7 +13,7 @@ export default function FinishedProjects() {
         <Card className="w-xs flex-1">
             <CardHeader className="flex flex-row items-center gap-3">
                 <CheckCircle2Icon className="w-3 h-3 opacity-50" />
-                <CardTitle className="text-sm opacity-50">Proyek terselesaikan</CardTitle>
+                <CardTitle className="text-sm opacity-50">Proyek selesai</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
                 <p className='text-3xl font-medium'>3</p>

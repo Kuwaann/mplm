@@ -48,6 +48,10 @@ export function AppSidebar() {
         {
             name: 'Kelola Proyek',
             href: '/kelola-proyek'
+        },
+        {
+            name: 'Log Aktivitas',
+            href: '/log-aktivitas'
         }
     ]
 
@@ -75,7 +79,14 @@ export function AppSidebar() {
                             <SidebarMenuButton asChild>
                                 <Link href={menus[1].href} className="text-sm">
                                     <Workflow />
-                                    Kelola proyek
+                                    {menus[1].name}
+                                    <SidebarMenuBadge>24</SidebarMenuBadge>
+                                </Link>
+                            </SidebarMenuButton>
+                            <SidebarMenuButton asChild>
+                                <Link href={menus[2].href} className="text-sm">
+                                    <Workflow />
+                                    {menus[2].name}
                                     <SidebarMenuBadge>24</SidebarMenuBadge>
                                 </Link>
                             </SidebarMenuButton>

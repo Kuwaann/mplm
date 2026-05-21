@@ -17,7 +17,7 @@ export default function TotalPendapatan() {
                 <CardTitle className="text-xs opacity-50">Total pendapatan</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
-                <p className='text-xl font-medium'>Rp 0,00</p>
+                <p className='text-xl font-medium'><span className="text-muted-foreground">Rp</span> 0,00</p>
                 <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
             </CardContent>
         </Card>

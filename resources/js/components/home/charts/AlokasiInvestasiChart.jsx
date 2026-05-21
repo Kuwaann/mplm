@@ -47,7 +47,7 @@ export function AlokasiInvestasiChart() {
             <CardContent className="flex-1 pb-0">
                 <div className="flex justify-center items-center gap-5">
                     <div className="flex items-start justify-center gap-2">
-                        <div className="w-1 rounded-full h-4 bg-[var(--chart-1)]"></div>
+                        <div className="w-1 rounded-full h-4 bg-[-chart-1]"></div>
                         <div>
                             <h3 className="text-muted-foreground text-md">Kapital</h3>
                             <p className="text-xl font-medium"><span className="text-muted-foreground">Rp</span> 0,00</p>
@@ -55,7 +55,7 @@ export function AlokasiInvestasiChart() {
 
                     </div>
                     <div className="flex items-start justify-center gap-2">
-                        <div className="w-1 rounded-full h-4 bg-[var(--chart-2)]"></div>
+                        <div className="w-1 rounded-full h-4 bg-[-chart-2]"></div>
                         <div>
                             <h3 className="text-muted-foreground text-md">Non-Kapital</h3>
                             <p className="text-xl font-medium"><span className="text-muted-foreground">Rp</span> 0,00</p>
