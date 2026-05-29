@@ -6,14 +6,14 @@ import MainSection from '@/components/kelola-proyek/MainSection'
 
 export default function KelolaProyekPage() {
     return (
-        <div className="kelola-proyek-menu p-12 flex flex-col gap-3">
+        <main className="kelola-proyek-menu p-12 flex flex-col gap-3">
             <div className="flex gap-3">
                 <ActiveProjects />
                 <DelayedProjects />
                 <FinishedProjects />
             </div>
             <MainSection />
-        </div>
+        </main>
     )
 }
 

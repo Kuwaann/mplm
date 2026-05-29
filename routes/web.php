@@ -14,3 +14,9 @@ Route::get('/kelola-proyek', function () {
         'title' => 'Kelola Proyek',
     ]);
 });
+
+Route::get('/detil-proyek', function () {
+    return Inertia::render('DetilProyekPage', [
+        'title' => 'Proyek',
+    ]);
+});

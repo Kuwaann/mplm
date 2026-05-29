@@ -18,7 +18,7 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Workflow, House, ChevronDown } from "lucide-react"
+import { Workflow, House, ChevronDown, ActivityIcon } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -35,11 +35,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 export function AppSidebar() {
     const { state } = useSidebar();
-    const { url } = usePage();
     const menus = [
         {
             name: 'Beranda',
@@ -85,9 +84,8 @@ export function AppSidebar() {
                             </SidebarMenuButton>
                             <SidebarMenuButton asChild>
                                 <Link href={menus[2].href} className="text-sm">
-                                    <Workflow />
+                                    <ActivityIcon />
                                     {menus[2].name}
-                                    <SidebarMenuBadge>24</SidebarMenuBadge>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>

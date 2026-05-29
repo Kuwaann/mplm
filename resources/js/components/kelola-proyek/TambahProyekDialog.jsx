@@ -12,6 +12,7 @@ import { Button } from "../ui/button"
 import { PlusCircleIcon } from "lucide-react"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import { Link } from "@inertiajs/react"
 
 export default function TambahProyekDialog() {
     return (
@@ -34,7 +35,7 @@ export default function TambahProyekDialog() {
                     <DialogClose asChild>
                         <Button type="button " variant="outline">Batal</Button>
                     </DialogClose>
-                    <Button type="submit">Tambah proyek</Button>
+                    <Link href="/detil-proyek"><Button type="submit">Tambah proyek</Button></Link>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
