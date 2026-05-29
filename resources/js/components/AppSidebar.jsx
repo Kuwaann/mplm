@@ -42,7 +42,7 @@ export function AppSidebar() {
     const menus = [
         {
             name: 'Beranda',
-            href: '/'
+            href: '/home'
         },
         {
             name: 'Kelola Proyek',
@@ -65,7 +65,7 @@ export function AppSidebar() {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link href="/" className="text-sm"><House />Beranda</Link>
+                                <Link href="/home" className="text-sm"><House />Beranda</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -158,8 +158,10 @@ export function AppSidebar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem className="text-destructive focus:text-destructive">
-                                Log out
-                                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                                <Link href="/">
+                                    Log out
+                                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                                </Link>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
