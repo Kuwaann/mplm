@@ -13,7 +13,7 @@ import {
 import { Link } from "@inertiajs/react"
 import { ProjectLocationMap } from "@/components/detil-proyek/ringkasan-proyek/ProjectLocationMap"
 import { Badge } from "@/components/ui/badge"
-import { CircleIcon } from "lucide-react"
+import { CircleIcon, UserIcon } from "lucide-react"
 import TotalProduksiKumulatif from "@/components/detil-proyek/ringkasan-proyek/kpi-cards/TotalProduksiKumulatif"
 import TotalInvestasiProyek from "@/components/detil-proyek/ringkasan-proyek/kpi-cards/TotalInvestasiProyek"
 import { Separator } from "@/components/ui/separator"
@@ -22,6 +22,9 @@ import TotalPendapatanProyek from "./kpi-cards/TotalPendapatanProyek"
 import TotalNetPresentValue from "./kpi-cards/TotalNetPresentValue"
 import TotalIRR from "./kpi-cards/TotalIRR"
 import TotalPaybackPeriod from "./kpi-cards/TotalPaybackPeriod"
+import { AliranKasKumulatifChart } from "./charts/AliranKasKumulatifChart"
+import { ProfilProduksiVsPendapatanChart } from "./charts/ProfilProduksiVsPendapatanChart"
+import { NetCashFlowTrendProyekChart } from "./charts/NetCashFlowTrendProyekChart"
 
 export default function RingkasanProyekMenu() {
     return (
@@ -62,9 +65,9 @@ export default function RingkasanProyekMenu() {
                         <TotalIRR />
                         <TotalPaybackPeriod />
                     </div>
-                    <div className="flex gap-3">
-
-                    </div>
+                    <AliranKasKumulatifChart />
+                    <ProfilProduksiVsPendapatanChart />
+                    <NetCashFlowTrendProyekChart />
                 </section>
                 <section className="flex-3 flex flex-col gap-5">
                     <Card className="bg-transparent border-none ring-0 p-0 rounded-none">
@@ -93,6 +96,38 @@ export default function RingkasanProyekMenu() {
                         </CardHeader>
                         <CardContent className="p-0 flex flex-col gap-2">
                             25 tahun
+                        </CardContent>
+                    </Card>
+                    <Separator />
+                    <Card className="bg-transparent border-none ring-0 p-0 rounded-none">
+                        <CardHeader className="p-0">
+                            <CardTitle className="text-sm text-muted-foreground flex gap-2 items-center">
+                                <UserIcon className="w-4 h-4" /> Manajer Proyek 
+                                <Badge variant="secondary">3</Badge>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-0 flex flex-col gap-3">
+                            <div className="flex gap-3 items-center">
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                                <p className="font-medium">Muhammad Emir Rivaldy</p>
+                            </div>
+                            <div className="flex gap-3 items-center">
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                                <p className="font-medium">John Doe</p>
+                            </div>
+                            <div className="flex gap-3 items-center">
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                                <p className="font-medium">Jane Doe</p>
+                            </div>
                         </CardContent>
                     </Card>
                 </section>

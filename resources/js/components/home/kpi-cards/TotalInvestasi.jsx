@@ -14,7 +14,7 @@ export default function TotalInvestasi() {
     return (
         <Card className="flex-1">
             <CardHeader>
-                <CardTitle className="text-xs opacity-50">Total investasi</CardTitle>
+                <CardTitle className="text-xs opacity-50">Total Investasi</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
                 <p className='text-xl font-medium'><span className="text-muted-foreground">Rp</span> 0,00</p>

@@ -25,6 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Link } from "@inertiajs/react"
 
 
 
@@ -84,7 +85,7 @@ export function DataTable({ columns, data }) {
                     <DropdownMenuContent className="w-auto" align="end">
                       <DropdownMenuLabel>Aksi proyek</DropdownMenuLabel>
                       <DropdownMenuGroup>
-                        <DropdownMenuItem><EyeIcon /> Detail proyek</DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link href="/detil-proyek"><EyeIcon /> Detail proyek</Link></DropdownMenuItem>
                         <DropdownMenuItem><PencilIcon /> Edit proyek</DropdownMenuItem>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />

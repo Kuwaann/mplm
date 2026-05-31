@@ -16,8 +16,8 @@ export function PerformaTerbaikTable() {
         <Card className="flex-2 flex flex-col gap-0 pb-0">
             <CardHeader className="mb-4 gap-3 justify-between items-center flex flex-row">
                 <div>
-                    <CardTitle>Proyek terbaik</CardTitle>
-                    <CardDescription>Menampilkan proyek dengan Net Cash Flow tertinggi</CardDescription>
+                    <CardTitle>Proyek Terbaik</CardTitle>
+                    <CardDescription>Menampilkan proyek dengan Net Cash Flow tertinggi.</CardDescription>
                 </div>
                 <CardAction>
                     <RentangWaktuSelect />

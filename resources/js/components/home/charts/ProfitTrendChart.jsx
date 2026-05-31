@@ -24,12 +24,11 @@ import { TrendingUpIcon, Settings } from 'lucide-react'
 export const description = "An area chart with gradient fill"
 
 const chartData = [
-    { month: "January", profit: 186 },
-    { month: "February", profit: 305 },
-    { month: "March", profit: 237 },
-    { month: "April", profit: 73 },
-    { month: "May", profit: 209 },
-    { month: "June", profit: 214 },
+    { tahun: 2022, profit: 186 },
+    { tahun: 2023, profit: 305 },
+    { tahun: 2024, profit: 237 },
+    { tahun: 2025, profit: 73 },
+    { tahun: 2026, profit: 209 },
 ]
 
 const chartConfig = {
@@ -43,16 +42,16 @@ export function ProfitTrendChart() {
     return (
         <Card className="flex flex-col flex-1">
             <CardHeader>
-                <CardTitle>Tren keuntungan</CardTitle>
+                <CardTitle>Tren Keuntungan</CardTitle>
                 <CardDescription>
-                    Menampilkan perkembangan keuntungan bersih (laba) proyek dari waktu ke waktu
+                    Menampilkan perkembangan keuntungan bersih (laba) proyek dari waktu ke waktu.
                 </CardDescription>
                 <CardAction className="flex flex-row gap-3">
                     <RentangWaktuSelect />
                 </CardAction>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
                     <p className="text-3xl font-medium"><span className="text-muted-foreground">Rp</span> 0,00 </p>
                     <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">0,00%</p></Badge>
                 </div>
@@ -61,17 +60,19 @@ export function ProfitTrendChart() {
                         accessibilityLayer
                         data={chartData}
                         margin={{
-                            left: 12,
-                            right: 12,
+                            right: 25,
+                            left: 25,
+                            top: 10,
                         }}
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="tahun"
+                            tickCount={5}
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            domain={[2022, 2026]}
                         />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
                         <defs>

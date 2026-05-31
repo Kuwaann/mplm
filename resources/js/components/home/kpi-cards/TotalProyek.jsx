@@ -13,7 +13,7 @@ export default function TotalProyek() {
     return (
         <Card className="flex-1">
             <CardHeader>
-                <CardTitle className="text-xs opacity-50">Total proyek</CardTitle>
+                <CardTitle className="text-xs opacity-50">Total Proyek</CardTitle>
                 <CardAction>
                     <Button size="sm"><Settings /> Kelola</Button>
                 </CardAction>

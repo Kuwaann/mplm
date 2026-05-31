@@ -22,22 +22,21 @@ import RentangWaktuSelect from "@/components/RentangWaktuSelect"
 export const description = "A multiple bar chart"
 
 const chartData = [
-    { month: "2026", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
+    { tahun: 2022, pendapatan: 186000000, opex: 50000000 },
+    { tahun: 2023, pendapatan: 305000000, opex: 65000000 },
+    { tahun: 2024, pendapatan: 237000000, opex: 55000000 },
+    { tahun: 2025, pendapatan: 280000000, opex: 73000000 }, 
+    { tahun: 2026, pendapatan: 350000000, opex: 80000000 },
 ]
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
-        color: "var(--chart-1)",
+    pendapatan: {
+        label: "Pendapatan",
+        color: "#10b981",
     },
-    mobile: {
-        label: "Mobile",
-        color: "var(--chart-2)",
+    opex: {
+        label: "Opex",
+        color: "#f59e0b",
     },
 }
 
@@ -46,7 +45,7 @@ export function RevenueVsTaxChart() {
         <Card className="flex flex-col flex-1">
             <CardHeader>
                 <CardTitle>Pendapatan vs Opex</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardDescription>Membandingkan total pendapatan kotor dengan biaya operasional proyek sepanjang periode terpilih.</CardDescription>
                 <CardAction className="flex flex-row gap-3">
                     <RentangWaktuSelect />
                 </CardAction>
@@ -56,18 +55,17 @@ export function RevenueVsTaxChart() {
                     <BarChart accessibilityLayer data={chartData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="tahun"
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
-                            tickFormatter={(value) => value.slice(0, 3)}
                         />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dashed" />}
                         />
-                        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                        <Bar dataKey="pendapatan" fill="var(--color-pendapatan)" radius={4} />
+                        <Bar dataKey="opex" fill="var(--color-opex)" radius={4} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>

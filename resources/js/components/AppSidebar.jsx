@@ -158,7 +158,7 @@ export function AppSidebar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem className="text-destructive focus:text-destructive">
-                                <Link href="/">
+                                <Link href="/" className="flex justify-between items-center w-full">
                                     Log out
                                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                                 </Link>

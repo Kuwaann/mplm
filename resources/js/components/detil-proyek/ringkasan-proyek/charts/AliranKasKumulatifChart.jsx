@@ -1,7 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis, YAxis, ReferenceLine } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
     Card,
@@ -10,55 +9,63 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-    CardAction
 } from "@/components/ui/card"
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import RentangWaktuSelect from "@/components/RentangWaktuSelect"
-import { BandingkanDropdown } from "../BandingkanDropdown"
 import chartFormatRupiah from "@/utils/chartFormatRupiah"
 
-export const description = "A line chart"
-
 const chartData = [
-    { tahun: 2022, netCashFlow: 186000000 },
-    { tahun: 2023, netCashFlow: 305000000 },
-    { tahun: 2024, netCashFlow: 237000000 },
-    { tahun: 2025, netCashFlow: -73000000 },
-    { tahun: 2026, netCashFlow: 209000000 },
+    { tahun: 0, arusKas: 0 },
+    { tahun: 1, arusKas: 0 },
+    { tahun: 2, arusKas: 0 },
+    { tahun: 3, arusKas: 0 },
+    { tahun: 4, arusKas: 0 },
+    { tahun: 5, arusKas: 0 },
+    { tahun: 6, arusKas: 0 },
+    { tahun: 7, arusKas: 0 },
+    { tahun: 8, arusKas: 0 },
+    { tahun: 9, arusKas: 0 },
+    { tahun: 10, arusKas: 0 },
+    { tahun: 11, arusKas: 0 },
+    { tahun: 12, arusKas: 0 },
+    { tahun: 13, arusKas: 0 },
+    { tahun: 14, arusKas: 0 },
+    { tahun: 15, arusKas: 0 },
+    { tahun: 16, arusKas: 0 },
+    { tahun: 17, arusKas: 0 },
+    { tahun: 18, arusKas: 0 },
+    { tahun: 19, arusKas: 0 },
+    { tahun: 20, arusKas: 0 },
+    { tahun: 21, arusKas: 0 },
+    { tahun: 22, arusKas: 0 },
+    { tahun: 23, arusKas: 0 },
+    { tahun: 24, arusKas: 0 },
+    { tahun: 25, arusKas: 0 },
 ]
 
 const chartConfig = {
-    netCashFlow: {
-        label: "Net Cash Flow",
+    arusKas: {
+        label: "Arus Kas",
         color: "var(--chart-1)",
     },
 }
 
-export function NetCashFlowTrendChart() {
+export function AliranKasKumulatifChart() {
     return (
         <Card className="w-full">
             <CardHeader>
-                <CardTitle>Tren Net Cash Flow</CardTitle>
-                <CardDescription>Menampilkan fluktuasi arus kas bersih proyek sepanjang periode terpilih.</CardDescription>
-                <CardAction className="flex flex-row gap-3">
-                    <BandingkanDropdown />
-                    <RentangWaktuSelect />
-                </CardAction>
+                <CardTitle>Aliran Kas Kumulatif</CardTitle>
+                <CardDescription>Visualisasi akumulasi kas masuk dan keluar proyek dari waktu ke waktu.</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="h-[250px] w-full">
+                <ChartContainer config={chartConfig} className="h-[250px] w-full min-h-[200px]">
                     <LineChart
                         accessibilityLayer
                         data={chartData}
-                        margin={{
-                            right: 50,
-                            left: 25,
-                            top: 10,
-                        }}
+                        margin={{ right: 50, left: 25, top: 10 }}
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
@@ -68,26 +75,27 @@ export function NetCashFlowTrendChart() {
                             tickMargin={8}
                         />
                         <YAxis
+                            yAxisId="left"
+                            orientation="left"
                             tickLine={false}
                             axisLine={false}
                             tickMargin={12}
                             tickCount={5}
-                            tickFormatter={chartFormatRupiah}
                             domain={['auto', 'auto']}
-                            width={70}
+                            tickFormatter={chartFormatRupiah}
                         />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Line
-                            dataKey="netCashFlow"
+                            yAxisId="left"
+                            dataKey="arusKas"
                             type="natural"
-                            stroke="var(--color-netCashFlow)"
+                            stroke="var(--color-arusKas)"
                             strokeWidth={2}
                             dot={false}
                         />
-                        <ReferenceLine y={0}/>
                     </LineChart>
                 </ChartContainer>
             </CardContent>

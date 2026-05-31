@@ -41,7 +41,7 @@ export function AlokasiInvestasiChart() {
     return (
         <Card className="flex flex-col flex-1">
             <CardHeader className="items-center pb-0">
-                <CardTitle>Alokasi investasi</CardTitle>
+                <CardTitle>Alokasi Investasi</CardTitle>
                 <CardDescription>Perbandingan alokasi investasi kapital dan non-kapital.</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
