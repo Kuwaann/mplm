@@ -26,3 +26,15 @@ Route::get('/detil-proyek', function () {
         'title' => 'Proyek',
     ]);
 });
+
+Route::get('/detil-proyek/data', function () {
+    return Inertia::render('DetilProyekDataPage', [
+        'title' => 'Data Proyek',
+    ]);
+});
+
+Route::get('/detil-proyek/data/tambah', function () {
+    return Inertia::render('TambahDataProyekPage', [
+        'title' => 'Tambah Data Proyek',
+    ]);
+});
