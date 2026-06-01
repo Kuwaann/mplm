@@ -38,7 +38,14 @@ const chartConfig = {
     }
 }
 
-export function ProfitTrendChart() {
+export function ProfitTrendChart({ data = chartData, totalProfit = 0 }) {
+    const formatCurrency = (num) => {
+        return new Intl.NumberFormat("id-ID", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(num)
+    }
+
     return (
         <Card className="flex flex-col flex-1">
             <CardHeader>
@@ -52,13 +59,15 @@ export function ProfitTrendChart() {
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center gap-2">
-                    <p className="text-3xl font-medium"><span className="text-muted-foreground">Rp</span> 0,00 </p>
-                    <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">0,00%</p></Badge>
+                    <p className="text-3xl font-medium">
+                        <span className="text-muted-foreground mr-1">Rp</span>
+                        {formatCurrency(totalProfit)} M
+                    </p>
                 </div>
                 <ChartContainer config={chartConfig} className="w-full flex-1 min-h-[200px]">
                     <AreaChart
                         accessibilityLayer
-                        data={chartData}
+                        data={data}
                         margin={{
                             right: 25,
                             left: 25,

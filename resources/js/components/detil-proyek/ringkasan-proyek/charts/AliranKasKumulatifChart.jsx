@@ -53,7 +53,9 @@ const chartConfig = {
     },
 }
 
-export function AliranKasKumulatifChart() {
+export function AliranKasKumulatifChart({ data }) {
+    const finalData = data || chartData
+
     return (
         <Card className="w-full">
             <CardHeader>
@@ -64,7 +66,7 @@ export function AliranKasKumulatifChart() {
                 <ChartContainer config={chartConfig} className="h-[250px] w-full min-h-[200px]">
                     <LineChart
                         accessibilityLayer
-                        data={chartData}
+                        data={finalData}
                         margin={{ right: 50, left: 25, top: 10 }}
                     >
                         <CartesianGrid vertical={false} />

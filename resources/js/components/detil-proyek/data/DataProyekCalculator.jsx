@@ -12,18 +12,47 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { CircleIcon, PlusCircle } from "lucide-react"
-import { Link } from "@inertiajs/react"
+import { CheckCircle2, CircleIcon, Loader2, PlusCircle, Save } from "lucide-react"
+import { Link, usePage, router } from "@inertiajs/react"
+import { simulateProjectEconomics } from "@/utils/PetroleumEconomicsEngine"
 
-export default function DataProyekCalculator() {
-    const [duration, setDuration] = useState(10)
-    const [capital, setCapital] = useState(13000)
-    const [nonCapital, setNonCapital] = useState(8000)
-    const [productionYear1, setProductionYear1] = useState(175)
-    const [declineRate, setDeclineRate] = useState(8)
-    const [oilPrice, setOilPrice] = useState(32)
-    const [opex, setOpex] = useState(180)
-    const [taxRate, setTaxRate] = useState(51)
+export default function DataProyekCalculator({ project }) {
+    const { props } = usePage()
+    const flash = props.flash
+    const [isSaving, setIsSaving] = useState(false)
+
+    const params = project?.economic_parameters?.[0]
+
+    const [duration, setDuration] = useState(params ? params.duration : "")
+    const [capital, setCapital] = useState(params ? params.capital_investment : "")
+    const [nonCapital, setNonCapital] = useState(params ? params.non_capital_investment : "")
+    const [productionYear1, setProductionYear1] = useState(params ? params.production_y1 : "")
+    const [declineRate, setDeclineRate] = useState(params ? Math.round(params.decline_rate * 100) : "")
+    const [oilPrice, setOilPrice] = useState(params ? params.oil_price : "")
+    const [opex, setOpex] = useState(params ? params.opex_y1 : "")
+    const [taxRate, setTaxRate] = useState(params ? Math.round(params.tax_rate * 100) : "")
+
+    const handleSave = () => {
+        if (!project?.id) return
+
+        setIsSaving(true)
+        router.post(
+            `/detil-proyek/${project.id}/parameter`,
+            {
+                duration: duration === "" ? 0 : Number(duration),
+                capital_investment: capital === "" ? 0 : Number(capital),
+                non_capital_investment: nonCapital === "" ? 0 : Number(nonCapital),
+                production_y1: productionYear1 === "" ? 0 : Number(productionYear1),
+                decline_rate: declineRate === "" ? 0 : Number(declineRate),
+                oil_price: oilPrice === "" ? 0 : Number(oilPrice),
+                opex_y1: opex === "" ? 0 : Number(opex),
+                tax_rate: taxRate === "" ? 0 : Number(taxRate),
+            },
+            {
+                onFinish: () => setIsSaving(false),
+            }
+        )
+    }
 
     const formatNumber = (value) => {
         if (value === "" || value === null || value === undefined) return "-"
@@ -33,51 +62,34 @@ export default function DataProyekCalculator() {
     }
 
     const rows = useMemo(() => {
-        const result = []
-
-        const totalInvestment = Number(capital) + Number(nonCapital)
-        const depreciation = totalInvestment / Number(duration)
-
-        result.push({
-            year: 0,
-            production: "",
-            income: "",
-            capital,
-            nonCapital,
-            opex: "",
-            depreciation: "",
-            taxableIncome: "",
-            tax: "",
-            ncf: -totalInvestment,
+        // Menggunakan engine terpusat untuk simulasi keekonomian proyek
+        const simulation = simulateProjectEconomics({
+            duration: Number(duration),
+            capital: Number(capital),
+            non_capital: Number(nonCapital),
+            production_y1: Number(productionYear1),
+            decline_rate: Number(declineRate) / 100,
+            oil_price: Number(oilPrice),
+            opex_y1: Number(opex),
+            opex_growth: 0, // Belum ada parameter growth di UI
+            tax_rate: Number(taxRate) / 100,
+            depreciation_method: 'straight_line',
+            deduct_investment_in_year_1: false // Investasi di tahun ke-0 sesuai behavior UI
         })
 
-        let production = Number(productionYear1)
-
-        for (let year = 1; year <= Number(duration); year++) {
-            if (year > 1) {
-                production = production * (1 - Number(declineRate) / 100)
-            }
-
-            const income = production * Number(oilPrice)
-            const taxableIncome = income - Number(opex) - depreciation
-            const tax = taxableIncome > 0 ? taxableIncome * Number(taxRate) / 100 : 0
-            const ncf = income - Number(opex) - depreciation - tax
-
-            result.push({
-                year,
-                production,
-                income,
-                capital: "",
-                nonCapital: "",
-                opex,
-                depreciation,
-                taxableIncome,
-                tax,
-                ncf,
-            })
-        }
-
-        return result
+        // Map hasil simulasi ke struktur data yang dibutuhkan UI
+        return simulation.rows.map((row) => ({
+            year: row.year,
+            production: row.year === 0 ? "" : row.production,
+            income: row.year === 0 ? "" : row.income,
+            capital: row.year === 0 ? row.capital : "",
+            nonCapital: row.year === 0 ? row.non_capital : "",
+            opex: row.year === 0 ? "" : row.opex,
+            depreciation: row.year === 0 ? "" : row.depreciation,
+            taxableIncome: row.year === 0 ? "" : row.taxable_income,
+            tax: row.year === 0 ? "" : row.tax,
+            ncf: row.ncf,
+        }))
     }, [
         duration,
         capital,
@@ -105,30 +117,49 @@ export default function DataProyekCalculator() {
 
     return (
         <main className="p-12">
-            <header className="mb-6">
+            {flash?.success && (
+                <div className="mb-6 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300">
+                    <CheckCircle2 className="size-5 shrink-0 text-emerald-500" />
+                    <span className="text-sm font-medium">{flash.success}</span>
+                </div>
+            )}
+
+            <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3">
-                        <h1 className="text-2xl font-medium">Nama Proyek</h1>
+                        <h1 className="text-2xl font-medium">{project?.name || "Nama Proyek"}</h1>
                         <Badge variant="outline" className="gap-1">
                             <CircleIcon className="size-3 fill-emerald-500 text-emerald-500" />
                             Data proyek
                         </Badge>
                     </div>
                     <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        <span>Durasi: {duration} tahun</span>
+                        <span>Durasi: {duration || "-"} tahun</span>
                         <span>•</span>
                         <span>Metode depresiasi: Straight Line</span>
                         <span>•</span>
-                        <span>Pajak: {taxRate}%</span>
+                        <span>Pajak: {taxRate || "-"}%</span>
                     </div>
                 </div>
 
-                <div className="mt-4">
-                    <Button asChild className="rounded-xl">
+                <div className="flex items-center gap-3">
+                    <Button asChild variant="outline" className="rounded-xl">
                         <Link href="/detil-proyek/data/tambah">
                             <PlusCircle className="size-4" />
                             Tambah data
                         </Link>
+                    </Button>
+                    <Button
+                        onClick={handleSave}
+                        disabled={isSaving}
+                        className="rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200"
+                    >
+                        {isSaving ? (
+                            <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                            <Save className="size-4" />
+                        )}
+                        Simpan Parameter
                     </Button>
                 </div>
             </header>
@@ -150,7 +181,7 @@ export default function DataProyekCalculator() {
                                 min="1"
                                 max="25"
                                 value={duration}
-                                onChange={(e) => setDuration(Number(e.target.value))}
+                                onChange={(e) => setDuration(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -160,7 +191,7 @@ export default function DataProyekCalculator() {
                                 id="capital"
                                 type="number"
                                 value={capital}
-                                onChange={(e) => setCapital(Number(e.target.value))}
+                                onChange={(e) => setCapital(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -170,7 +201,7 @@ export default function DataProyekCalculator() {
                                 id="nonCapital"
                                 type="number"
                                 value={nonCapital}
-                                onChange={(e) => setNonCapital(Number(e.target.value))}
+                                onChange={(e) => setNonCapital(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -180,7 +211,7 @@ export default function DataProyekCalculator() {
                                 id="productionYear1"
                                 type="number"
                                 value={productionYear1}
-                                onChange={(e) => setProductionYear1(Number(e.target.value))}
+                                onChange={(e) => setProductionYear1(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -190,7 +221,7 @@ export default function DataProyekCalculator() {
                                 id="declineRate"
                                 type="number"
                                 value={declineRate}
-                                onChange={(e) => setDeclineRate(Number(e.target.value))}
+                                onChange={(e) => setDeclineRate(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -200,7 +231,7 @@ export default function DataProyekCalculator() {
                                 id="oilPrice"
                                 type="number"
                                 value={oilPrice}
-                                onChange={(e) => setOilPrice(Number(e.target.value))}
+                                onChange={(e) => setOilPrice(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -210,7 +241,7 @@ export default function DataProyekCalculator() {
                                 id="opex"
                                 type="number"
                                 value={opex}
-                                onChange={(e) => setOpex(Number(e.target.value))}
+                                onChange={(e) => setOpex(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
 
@@ -220,7 +251,7 @@ export default function DataProyekCalculator() {
                                 id="taxRate"
                                 type="number"
                                 value={taxRate}
-                                onChange={(e) => setTaxRate(Number(e.target.value))}
+                                onChange={(e) => setTaxRate(e.target.value === "" ? "" : Number(e.target.value))}
                             />
                         </div>
                     </div>

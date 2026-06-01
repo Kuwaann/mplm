@@ -10,14 +10,21 @@ import {
 import { TrendingUpIcon, Settings } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 
-export default function TotalInvestasiProyek() {
+export default function TotalInvestasiProyek({ value = 0 }) {
+    const formatCurrency = (num) => {
+        return new Intl.NumberFormat("id-ID", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(num)
+    }
+
     return (
         <Card className="flex-1">
             <CardHeader>
                 <CardTitle className="text-xs opacity-50">Total Investasi</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
-                <p className='text-xl font-medium'><span className="text-muted-foreground">Rp</span> 0,00</p>
+                <p className='text-xl font-medium'><span className="text-muted-foreground">Rp</span> {formatCurrency(value)}</p>
                 <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
             </CardContent>
         </Card>

@@ -8,28 +8,33 @@ import { InfoIcon, LineChartIcon, Settings } from "lucide-react"
 import { Link, usePage } from "@inertiajs/react"
 
 export default function ProjectNavigationMenu() {
-    const { url } = usePage()
+    const { url, props } = usePage()
+    const project = props.project
+    const id = project?.id
 
-    const navItemClass = (href) =>
-        `flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
-            url === href
+    const navItemClass = (pathSuffix) => {
+        const expectedUrl = id ? `/detil-proyek/${id}${pathSuffix}` : `/detil-proyek${pathSuffix}`
+        const isActive = url === expectedUrl
+        return `flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+            isActive
                 ? "border-b-2 border-foreground rounded-none text-foreground"
                 : "text-muted-foreground hover:text-foreground"
         }`
+    }
 
     return (
         <NavigationMenu>
             <NavigationMenuList className="gap-3">
                 <NavigationMenuItem className="">
                     <NavigationMenuLink asChild>
-                        <Link href="/detil-proyek" className={navItemClass("/detil-proyek")}>
+                        <Link href={id ? `/detil-proyek/${id}` : "/detil-proyek"} className={navItemClass("")}>
                             <InfoIcon /> Ringkasan
                         </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem className="">
                     <NavigationMenuLink asChild>
-                        <Link href="/detil-proyek/data" className={navItemClass("/detil-proyek/data")}>
+                        <Link href={id ? `/detil-proyek/${id}/data` : "/detil-proyek/data"} className={navItemClass("/data")}>
                             <LineChartIcon /> Data
                         </Link>
                     </NavigationMenuLink>

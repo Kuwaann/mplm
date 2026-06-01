@@ -57,7 +57,9 @@ const chartConfig = {
     }
 }
 
-export function ProfilProduksiVsPendapatanChart() {
+export function ProfilProduksiVsPendapatanChart({ data }) {
+    const finalData = data || chartData
+
     return (
         <Card className="w-full">
             <CardHeader>
@@ -66,7 +68,7 @@ export function ProfilProduksiVsPendapatanChart() {
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-[250px] min-h-[200px] w-full">
-                    <ComposedChart data={chartData} margin={{ right: 50, left: 25, top: 10 }}>
+                    <ComposedChart data={finalData} margin={{ right: 50, left: 25, top: 10 }}>
 
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis

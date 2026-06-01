@@ -35,10 +35,41 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import React, { useState, useEffect } from 'react';
 
 export function AppSidebar() {
     const { state } = useSidebar();
+    const { url, props } = usePage();
+    const [recentProjects, setRecentProjects] = useState([]);
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem('recent_projects');
+            if (stored) {
+                setRecentProjects(JSON.parse(stored));
+            }
+        } catch (e) {
+            console.error('Failed to load recent projects', e);
+        }
+    }, []);
+
+    useEffect(() => {
+        const activeProject = props.project;
+        if (activeProject && activeProject.id && activeProject.name) {
+            setRecentProjects((prev) => {
+                const filtered = prev.filter(p => p.id !== activeProject.id);
+                const updated = [{ id: activeProject.id, name: activeProject.name }, ...filtered].slice(0, 5);
+                try {
+                    localStorage.setItem('recent_projects', JSON.stringify(updated));
+                } catch (e) {
+                    console.error('Failed to save recent projects', e);
+                }
+                return updated;
+            });
+        }
+    }, [props.project]);
+
     const menus = [
         {
             name: 'Beranda',
@@ -54,6 +85,8 @@ export function AppSidebar() {
         }
     ]
 
+    const projectCount = props.projects?.length ?? 10;
+
     return (
         <Sidebar variant="inset" collapsible="icon">
             <SidebarHeader className="flex flex-row justify-between">
@@ -64,7 +97,7 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild>
+                            <SidebarMenuButton asChild isActive={url === '/home'}>
                                 <Link href="/home" className="text-sm"><House />Beranda</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
@@ -75,14 +108,16 @@ export function AppSidebar() {
                     <SidebarGroupLabel asChild><label className="font-medium">Alat</label></SidebarGroupLabel>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild>
+                            <SidebarMenuButton asChild isActive={url.startsWith('/kelola-proyek')}>
                                 <Link href={menus[1].href} className="text-sm">
                                     <Workflow />
                                     {menus[1].name}
-                                    <SidebarMenuBadge>24</SidebarMenuBadge>
+                                    <SidebarMenuBadge>{projectCount}</SidebarMenuBadge>
                                 </Link>
                             </SidebarMenuButton>
-                            <SidebarMenuButton asChild>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild isActive={url.startsWith('/log-aktivitas')}>
                                 <Link href={menus[2].href} className="text-sm">
                                     <ActivityIcon />
                                     {menus[2].name}
@@ -103,20 +138,23 @@ export function AppSidebar() {
                             </SidebarGroupLabel>
                             <CollapsibleContent>
                                 <SidebarMenu>
-                                    <SidebarMenuItem>
-                                        <SidebarMenuButton asChild>
-                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
-                                        </SidebarMenuButton>
-                                        <SidebarMenuButton asChild>
-                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
-                                        </SidebarMenuButton>
-                                        <SidebarMenuButton asChild>
-                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
-                                        </SidebarMenuButton>
-                                        <SidebarMenuButton asChild>
-                                            <Link href="" className="text-sm truncate">Proyek 1</Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
+                                    {recentProjects.length > 0 ? (
+                                        recentProjects.map((p) => (
+                                            <SidebarMenuItem key={p.id}>
+                                                <SidebarMenuButton asChild isActive={url.startsWith(`/detil-proyek/${p.id}`)}>
+                                                    <Link href={`/detil-proyek/${p.id}`} className="text-sm truncate">
+                                                        {p.name}
+                                                    </Link>
+                                                </SidebarMenuButton>
+                                            </SidebarMenuItem>
+                                        ))
+                                    ) : (
+                                        <SidebarMenuItem>
+                                            <span className="text-xs text-muted-foreground px-2 py-1.5 block italic">
+                                                Belum ada proyek yang dibuka
+                                            </span>
+                                        </SidebarMenuItem>
+                                    )}
                                 </SidebarMenu>
                             </CollapsibleContent>
                         </SidebarGroup>

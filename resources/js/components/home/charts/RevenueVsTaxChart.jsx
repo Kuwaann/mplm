@@ -40,7 +40,7 @@ const chartConfig = {
     },
 }
 
-export function RevenueVsTaxChart() {
+export function RevenueVsTaxChart({ data = chartData }) {
     return (
         <Card className="flex flex-col flex-1">
             <CardHeader>
@@ -52,7 +52,7 @@ export function RevenueVsTaxChart() {
             </CardHeader>
             <CardContent className="flex-1 flex flex-col">
                 <ChartContainer config={chartConfig} className="flex-1 w-full min-h-[250px]">
-                    <BarChart accessibilityLayer data={chartData}>
+                    <BarChart accessibilityLayer data={data}>
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="tahun"

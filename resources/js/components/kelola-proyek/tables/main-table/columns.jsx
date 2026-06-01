@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge"
 import { CircleIcon } from "lucide-react"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
-
+import { calculateProjectProgress } from "@/components/detil-proyek/ringkasan-proyek/ProgresProyek"
 export const columns = [
     {
         accessorKey: "nama_proyek",
@@ -17,15 +17,17 @@ export const columns = [
         header: "Umur Proyek",
         cell: ({ row }) => {
             const umurProyek = row.getValue("umur_proyek")
+            const project = row.original.project
+            const { progress } = calculateProjectProgress(project)
             return (
                 <div className="flex flex-col gap-1">
                     {umurProyek}
                     <Field className="w-full max-w-sm">
                         <FieldLabel htmlFor="progress-upload">
                             <span className="text-xs text-muted-foreground">Progres proyek</span>
-                            <span className="ml-auto">{Math.round((6 / 7) * 100)}%</span>
+                            <span className="ml-auto">{progress}%</span>
                         </FieldLabel>
-                        <Progress value={66} id="progress-upload" />
+                        <Progress value={progress} id="progress-upload" />
                     </Field>
                 </div>
             )
