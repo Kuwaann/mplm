@@ -15,15 +15,15 @@ import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
-    ChartLegend,
-    ChartLegendContent,
 } from "@/components/ui/chart"
+import { ChartLegend, ChartLegendContent } from "@/components/ui/chart"
+import { Separator } from "@/components/ui/separator"
 
-export const description = "A simple pie chart"
+export const description = "A donut chart"
 
 const chartData = [
-    { tipe: "kapital", jumlah: 275, fill: "var(--color-kapital)" },
-    { tipe: "nonKapital", jumlah: 200, fill: "var(--color-nonKapital)" },
+    { tipe: "kapital", jumlah: 100, fill: "var(--color-kapital)" },
+    { tipe: "nonKapital", jumlah: 100, fill: "var(--color-nonKapital)" },
 ]
 
 const chartConfig = {
@@ -41,27 +41,47 @@ export function AlokasiInvestasiChart() {
     return (
         <Card className="flex flex-col flex-1">
             <CardHeader className="items-center pb-0">
-                <CardTitle>Alokasi investasi</CardTitle>
-                <CardDescription>Perbandingan investasi kapital dan non-kapital</CardDescription>
+                <CardTitle>Alokasi Investasi</CardTitle>
+                <CardDescription>Perbandingan alokasi investasi kapital dan non-kapital.</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1">
+            <CardContent className="flex-1 pb-0">
+                <div className="flex justify-center items-center gap-5">
+                    <div className="flex items-start justify-center gap-2">
+                        <div className="w-1 rounded-full h-4 bg-[-chart-1]"></div>
+                        <div>
+                            <h3 className="text-muted-foreground text-md">Kapital</h3>
+                            <p className="text-xl font-medium"><span className="text-muted-foreground">Rp</span> 0,00</p>
+                        </div>
+
+                    </div>
+                    <div className="flex items-start justify-center gap-2">
+                        <div className="w-1 rounded-full h-4 bg-[-chart-2]"></div>
+                        <div>
+                            <h3 className="text-muted-foreground text-md">Non-Kapital</h3>
+                            <p className="text-xl font-medium"><span className="text-muted-foreground">Rp</span> 0,00</p>
+                        </div>
+
+                    </div>
+                </div>
                 <ChartContainer
                     config={chartConfig}
-                    className="mx-auto aspect-square max-h-[250px]"
+                    className="aspect-square h-full w-full"
                 >
                     <PieChart>
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent hideLabel />}
                         />
-                        <Pie data={chartData} dataKey="jumlah" nameKey="tipe" />
-                        <ChartLegend
-                            content={<ChartLegendContent nameKey="tipe" />}
-                            className="-translate-y-2  gap-3  *:justify-center"
+                        <ChartLegend content={<ChartLegendContent nameKey="tipe" />} />
+                        <Pie
+                            data={chartData}
+                            dataKey="jumlah"
+                            nameKey="tipe"
+                            innerRadius={60}
                         />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
-        </Card>
+        </Card >
     )
 }

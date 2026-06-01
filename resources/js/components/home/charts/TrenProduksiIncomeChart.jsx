@@ -50,7 +50,7 @@ export function TrenProduksiIncomeChart() {
                 </CardAction>
             </CardHeader>
             <CardContent className="flex-1">
-                <ChartContainer config={chartConfig} className="h-full w-full">
+                <ChartContainer config={chartConfig} className="h-[250px] w-full">
                     <LineChart
                         accessibilityLayer
                         data={chartData}

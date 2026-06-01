@@ -31,6 +31,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import TambahProyekDialog from "./TambahProyekDialog"
+import ProyekFilter from "./ProyekFilter"
+
 const dummyData = [
     {
         id: "proj-001",
@@ -83,9 +86,9 @@ export default function MainSection() {
                 <CardAction className="flex flex-row gap-4">
                     <div className="flex flex-row gap-2">
                         <SearchBox className="w-[250px]" />
-                        <Button variant="outline"><FilterIcon /></Button>
+                        <ProyekFilter />
                     </div>
-                    <Button className="py-4"><PlusCircleIcon />Tambah proyek</Button>
+                    <TambahProyekDialog />
                 </CardAction>
             </CardHeader>
             <Separator />

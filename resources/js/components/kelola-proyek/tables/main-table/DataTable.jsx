@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { EllipsisIcon } from "lucide-react"
+import { EllipsisIcon, EyeIcon, PencilIcon, TrashIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -25,6 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Link } from "@inertiajs/react"
 
 
 
@@ -77,20 +78,19 @@ export function DataTable({ columns, data }) {
                   </TableCell>
                 ))}
                 <TableCell className="py-4">
-                  <DropdownMenu>
+                  <DropdownMenu className="w-auto">
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost"><EllipsisIcon className="rotate-90" /></Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent className="w-auto" align="end">
+                      <DropdownMenuLabel>Aksi proyek</DropdownMenuLabel>
                       <DropdownMenuGroup>
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Billing</DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link href="/detil-proyek"><EyeIcon /> Detail proyek</Link></DropdownMenuItem>
+                        <DropdownMenuItem><PencilIcon /> Edit proyek</DropdownMenuItem>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
-                        <DropdownMenuItem>Team</DropdownMenuItem>
-                        <DropdownMenuItem>Subscription</DropdownMenuItem>
+                        <DropdownMenuItem variant="destructive"><TrashIcon /> Hapus proyek</DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>

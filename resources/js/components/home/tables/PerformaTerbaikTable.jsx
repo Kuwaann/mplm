@@ -13,14 +13,17 @@ import RentangWaktuSelect from "@/components/RentangWaktuSelect"
 
 export function PerformaTerbaikTable() {
     return (
-        <Card className="flex-2 flex flex-col gap-0">
+        <Card className="flex-2 flex flex-col gap-0 pb-0">
             <CardHeader className="mb-4 gap-3 justify-between items-center flex flex-row">
-                <CardTitle>Proyek terbaik</CardTitle>
+                <div>
+                    <CardTitle>Proyek Terbaik</CardTitle>
+                    <CardDescription>Menampilkan proyek dengan Net Cash Flow tertinggi.</CardDescription>
+                </div>
                 <CardAction>
                     <RentangWaktuSelect />
                 </CardAction>
             </CardHeader>
-            <CardContent className="flex-1 flex flex-col gap-1">
+            <CardContent className="flex-1 flex flex-col gap-1 p-0">
                 <ProjectItem />
                 <ProjectItem />
                 <ProjectItem />

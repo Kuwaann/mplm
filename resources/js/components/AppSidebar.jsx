@@ -18,7 +18,7 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Workflow, House, ChevronDown } from "lucide-react"
+import { Workflow, House, ChevronDown, ActivityIcon } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -35,19 +35,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 export function AppSidebar() {
     const { state } = useSidebar();
-    const { url } = usePage();
     const menus = [
         {
             name: 'Beranda',
-            href: '/'
+            href: '/home'
         },
         {
             name: 'Kelola Proyek',
             href: '/kelola-proyek'
+        },
+        {
+            name: 'Log Aktivitas',
+            href: '/log-aktivitas'
         }
     ]
 
@@ -62,7 +65,7 @@ export function AppSidebar() {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link href="/" className="text-sm"><House />Beranda</Link>
+                                <Link href="/home" className="text-sm"><House />Beranda</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -75,8 +78,14 @@ export function AppSidebar() {
                             <SidebarMenuButton asChild>
                                 <Link href={menus[1].href} className="text-sm">
                                     <Workflow />
-                                    Kelola proyek
+                                    {menus[1].name}
                                     <SidebarMenuBadge>24</SidebarMenuBadge>
+                                </Link>
+                            </SidebarMenuButton>
+                            <SidebarMenuButton asChild>
+                                <Link href={menus[2].href} className="text-sm">
+                                    <ActivityIcon />
+                                    {menus[2].name}
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
@@ -149,8 +158,10 @@ export function AppSidebar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem className="text-destructive focus:text-destructive">
-                                Log out
-                                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                                <Link href="/" className="flex justify-between items-center w-full">
+                                    Log out
+                                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                                </Link>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>

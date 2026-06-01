@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function HomePage() {
     return (
-        <div className="homepage-menu p-12">
+        <main className="homepage-menu p-12">
             <div className="flex gap-3 items-center mb-10">
                 <Avatar className="">
                     <AvatarImage src="https://github.com/shadcn.png" />
@@ -16,7 +16,7 @@ export default function HomePage() {
                 </div>
             </div>
             <CardsSection />
-        </div>
+        </main>
 
     )
 }
