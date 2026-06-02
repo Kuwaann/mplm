@@ -25,7 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Link } from "@inertiajs/react"
+import { Link, router } from "@inertiajs/react"
 
 
 
@@ -73,7 +73,15 @@ export function DataTable({ columns, data }) {
                   <Checkbox />
                 </TableCell>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="py-4">
+                  <TableCell
+                    key={cell.id}
+                    className="py-4 cursor-pointer hover:bg-muted/30 transition-colors"
+                    onClick={() => {
+                      const id = row.original.id;
+                      const url = id ? `/detil-proyek/${id}` : "/detil-proyek";
+                      router.visit(url);
+                    }}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -85,7 +93,11 @@ export function DataTable({ columns, data }) {
                     <DropdownMenuContent className="w-auto" align="end">
                       <DropdownMenuLabel>Aksi proyek</DropdownMenuLabel>
                       <DropdownMenuGroup>
-                        <DropdownMenuItem asChild><Link href="/detil-proyek"><EyeIcon /> Detail proyek</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={row.original.id ? `/detil-proyek/${row.original.id}` : "/detil-proyek"}>
+                            <EyeIcon /> Detail proyek
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem><PencilIcon /> Edit proyek</DropdownMenuItem>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />

@@ -1,25 +1,33 @@
-import { Button } from "@/components/ui/button"
-import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
 
-export function ProjectItem() {
+export function ProjectItem({ name = "Proyek Tanpa Nama", ncf = 0, percent = 0 }) {
+    const formatCurrency = (num) => {
+        return new Intl.NumberFormat("id-ID", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(num)
+    }
+
     return (
-        <Button variant="ghost" className="flex flex-1 items-center justify-between gap-10 px-4 py-2">
-            <div className="flex flex-1 flex-col justfiy-center items-start gap-1">
+        <div className="flex flex-1 items-center justify-between gap-10 px-6 py-3 hover:bg-muted/30 transition-colors">
+            <div className="flex flex-1 flex-col justify-center items-start gap-1.5">
                 <div>
-                    <p className="text-sm font-medium">Proyek Mahakam A</p>
+                    <p className="text-sm font-medium">{name}</p>
                 </div>
-                <Field className="w-full">
-                    <FieldLabel htmlFor="progress-upload">
-                        <span className="text-xs text-muted-foreground">Progres proyek</span>
-                        <span className="ml-auto">{Math.round((6 / 7) * 100)}%</span>
-                    </FieldLabel>
-                    <Progress value={66} id="progress-upload" className="" />
-                </Field>
+                <div className="w-full space-y-1">
+                    <div className="flex text-xs text-muted-foreground justify-between">
+                        <span>Kontribusi portofolio</span>
+                        <span>{percent}%</span>
+                    </div>
+                    <Progress value={percent} className="h-1.5" />
+                </div>
             </div>
-            <div className="text-right">
-                <p className="text-sm font-medium text-emerald-500">Rp 14.250 M</p>
+            <div className="text-right min-w-[120px]">
+                <p className="text-sm font-medium text-emerald-500">
+                    <span className="text-xs mr-0.5">Rp</span>
+                    {formatCurrency(ncf)} M
+                </p>
             </div>
-        </Button>
+        </div>
     )
 }

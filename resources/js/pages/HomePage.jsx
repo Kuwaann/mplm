@@ -2,7 +2,7 @@ import Layout from '../layouts/Layout'
 import CardsSection from '@/components/home/CardsSection'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function HomePage() {
+export default function HomePage({ projects }) {
     return (
         <main className="homepage-menu p-12">
             <div className="flex gap-3 items-center mb-10">
@@ -15,7 +15,7 @@ export default function HomePage() {
                     <h2 className="text-muted-foreground text-sm">Berikut adalah ringkasan performa proyek migas hari ini.</h2>
                 </div>
             </div>
-            <CardsSection />
+            <CardsSection projects={projects} />
         </main>
 
     )

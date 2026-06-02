@@ -56,7 +56,9 @@ const chartConfig = {
   },
 }
 
-export function NetCashFlowTrendProyekChart() {
+export function NetCashFlowTrendProyekChart({ data }) {
+  const finalData = data || chartData
+
   return (
     <Card>
       <CardHeader>
@@ -69,7 +71,7 @@ export function NetCashFlowTrendProyekChart() {
         <ChartContainer config={chartConfig} className="min-h-[200px] h-[250px] w-full">
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={finalData}
             margin={{ right: 50, left: 25, top: 10 }}
           >
             <CartesianGrid vertical={false} />

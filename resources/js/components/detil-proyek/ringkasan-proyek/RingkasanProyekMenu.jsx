@@ -25,17 +25,103 @@ import TotalPaybackPeriod from "./kpi-cards/TotalPaybackPeriod"
 import { AliranKasKumulatifChart } from "./charts/AliranKasKumulatifChart"
 import { ProfilProduksiVsPendapatanChart } from "./charts/ProfilProduksiVsPendapatanChart"
 import { NetCashFlowTrendProyekChart } from "./charts/NetCashFlowTrendProyekChart"
+import { simulateProjectEconomics } from "../../../utils/PetroleumEconomicsEngine"
 
-export default function RingkasanProyekMenu() {
+export default function RingkasanProyekMenu({ project }) {
+    const activeProject = project
+
+    if (!activeProject) {
+        return (
+            <main className="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
+                <p className="text-muted-foreground">Belum ada proyek yang dibuat.</p>
+            </main>
+        )
+    }
+
+    const params = activeProject.economic_parameters?.[0]
+    const hasParams = !!params
+    const status = activeProject.status || "Aktif"
+
+    let latVal = -0.9122
+    let lonVal = 117.2511
+    let lokasiDisplay = activeProject.location || "Kalimantan Timur"
+
+    try {
+        if (activeProject.location && activeProject.location.trim().startsWith('{')) {
+            const locObj = JSON.parse(activeProject.location)
+            lokasiDisplay = [locObj.city, locObj.province, locObj.country].filter(Boolean).join(", ")
+            if (locObj.lat !== undefined && locObj.lon !== undefined) {
+                latVal = Number(locObj.lat)
+                lonVal = Number(locObj.lon)
+            }
+        }
+    } catch (e) {}
+
+    let simulation = null
+    let totals = null
+    let indicators = null
+    let kasKumulatifData = []
+    let netCashFlowData = []
+    let produksiVsPendapatanData = []
+
+    if (hasParams) {
+        // Jalankan kalkulator petroleum economics
+        simulation = simulateProjectEconomics({
+            duration: Number(params.duration),
+            capital: Number(params.capital_investment),
+            non_capital: Number(params.non_capital_investment),
+            production_y1: Number(params.production_y1),
+            decline_rate: Number(params.decline_rate),
+            oil_price: Number(params.oil_price),
+            opex_y1: Number(params.opex_y1),
+            opex_growth: Number(params.opex_growth || 0),
+            tax_rate: Number(params.tax_rate),
+            depreciation_method: params.depreciation_method || 'straight_line',
+            deduct_investment_in_year_1: true
+        })
+
+        totals = simulation.totals
+        indicators = simulation.indicators
+
+        // Siapkan data grafik dari baris-baris simulasi
+        kasKumulatifData = simulation.rows.map(row => ({
+            tahun: `Thn ${row.year}`,
+            arusKas: row.cumulative_ncf
+        }))
+
+        netCashFlowData = simulation.rows.map(row => ({
+            tahun: `Thn ${row.year}`,
+            netCashFlow: row.ncf
+        }))
+
+        produksiVsPendapatanData = simulation.rows.filter(row => row.year > 0).map(row => ({
+            tahun: `Thn ${row.year}`,
+            produksi: row.production,
+            pendapatan: row.income
+        }))
+    }
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "-"
+        const date = new Date(dateStr)
+        return new Intl.DateTimeFormat("id-ID", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }).format(date)
+    }
+
     return (
         <main className="p-12">
             <header className="flex justify-between items-center mb-3">
                 <div className="flex flex-col gap-3">
                     <div className="flex gap-3 items-center">
-                        <h1 className="text-2xl font-medium">Nama Proyek</h1>
+                        <h1 className="text-2xl font-medium">{activeProject.name}</h1>
                         <Badge variant="outline">
                             <CircleIcon className={status === "Aktif" ? "text-emerald-500 fill-emerald-500" : status === "Tertunda" ? "text-amber-500 fill-amber-500" : "fill-blue-400 text-blue-400"} />
-                            <span className={status === "Aktif" ? "text-emerald-500 fill-emerald-500" : status === "Tertunda" ? "text-amber-500 fill-amber-500" : "fill-blue-400 text-blue-400"}>Selesai</span>
+                            <span className={status === "Aktif" ? "text-emerald-500 ml-1" : status === "Tertunda" ? "text-amber-500 ml-1" : "text-blue-400 ml-1"}>
+                                {status}
+                            </span>
                         </Badge>
                     </div>
                     <div className="flex gap-2 items-center">
@@ -43,50 +129,70 @@ export default function RingkasanProyekMenu() {
                             Dibuat oleh: Muhammad Emir Rivaldy
                         </span>
                         <span>•</span>
-                        <span className="text-muted-foreground text-xs">Dibuat: 28 Mei 2025</span>
+                        <span className="text-muted-foreground text-xs">Dibuat: {formatDate(activeProject.created_at)}</span>
                         <span>•</span>
-                        <span className="text-muted-foreground text-xs">Diperbarui: 28 Mei 2025</span>
+                        <span className="text-muted-foreground text-xs">Diperbarui: {formatDate(activeProject.updated_at)}</span>
                     </div>
-
                 </div>
                 <Button variant="outline"><StarIcon /> Favorit</Button>
             </header>
             <Separator />
             <div className="flex justify-between items-start mt-12 gap-6">
-                <section className="flex flex-col gap-6 flex-7">
+                <section className="flex flex-col gap-6 flex-7 w-2/3">
                     <div>
-                        <ProgresProyek />
+                        <ProgresProyek project={activeProject} />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                        <TotalProduksiKumulatif />
-                        <TotalInvestasiProyek />
-                        <TotalPendapatanProyek />
-                        <TotalNetPresentValue />
-                        <TotalIRR />
-                        <TotalPaybackPeriod />
-                    </div>
-                    <AliranKasKumulatifChart />
-                    <ProfilProduksiVsPendapatanChart />
-                    <NetCashFlowTrendProyekChart />
+                    {hasParams ? (
+                        <>
+                            <div className="grid grid-cols-2 gap-3">
+                                <TotalProduksiKumulatif value={totals.production} />
+                                <TotalInvestasiProyek value={totals.capital + totals.non_capital} />
+                                <TotalPendapatanProyek value={totals.income} />
+                                <TotalNetPresentValue value={indicators.npv} />
+                                <TotalIRR value={indicators.irr ? (indicators.irr * 100) : 0} />
+                                <TotalPaybackPeriod value={indicators.payback_period ?? 0} />
+                            </div>
+                            <AliranKasKumulatifChart data={kasKumulatifData} />
+                            <ProfilProduksiVsPendapatanChart data={produksiVsPendapatanData} />
+                            <NetCashFlowTrendProyekChart data={netCashFlowData} />
+                        </>
+                    ) : (
+                        <Card className="border border-dashed border-muted-foreground/30 p-12 text-center flex flex-col items-center justify-center gap-4 bg-muted/5 rounded-2xl">
+                            <div className="p-4 bg-amber-500/10 rounded-full text-amber-550 dark:text-amber-400">
+                                <InfoIcon className="size-8" />
+                            </div>
+                            <div className="max-w-md">
+                                <h3 className="text-lg font-semibold mb-1 text-foreground">Parameter Ekonomi Belum Diatur</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    Proyek baru ini belum memiliki parameter data keekonomian. Untuk melihat analisis kelayakan, grafik arus kas kumulatif, dan metrik NPV/IRR, silakan tambahkan data parameter terlebih dahulu.
+                                </p>
+                            </div>
+                            <Button asChild className="mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200 shadow-md">
+                                <Link href={`/detil-proyek/${activeProject.id}/data`}>
+                                    Atur Parameter Sekarang
+                                </Link>
+                            </Button>
+                        </Card>
+                    )}
                 </section>
-                <section className="flex-3 flex flex-col gap-5">
+                <section className="flex-3 flex flex-col gap-5 w-1/3">
                     <Card className="bg-transparent border-none ring-0 p-0 rounded-none">
                         <CardHeader className="p-0">
                             <CardTitle className="text-sm text-muted-foreground flex gap-2 items-center"><InfoIcon className="w-4 h-4" />  Deskripsi Proyek</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-0">
-                            <p className="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut deleniti quam enim reprehenderit at consequuntur, odio fuga tempora placeat veniam vero nostrum repudiandae optio eum, aut doloribus, distinctio quibusdam saepe.</p>
+                        <CardContent className="p-0 mt-2">
+                            <p className="text-justify text-sm leading-relaxed">{activeProject.description || "Tidak ada deskripsi."}</p>
                         </CardContent>
                     </Card>
                     <Separator />
                     <Card className="bg-transparent border-none ring-0 p-0 rounded-none">
                         <CardHeader className="p-0">
                             <CardTitle className="text-sm text-muted-foreground flex gap-2 items-center"><MapPinIcon className="w-4 h-4" /> Lokasi Proyek</CardTitle>
-                            <CardAction className=""><Link className="text-sky-500 text-sm">Lihat di Google Maps</Link></CardAction>
+                            <CardAction className=""><a href={`https://www.google.com/maps/search/?api=1&query=${latVal},${lonVal}`} target="_blank" rel="noopener noreferrer" className="text-sky-500 text-sm">Lihat di Google Maps</a></CardAction>
                         </CardHeader>
-                        <CardContent className="p-0 flex flex-col gap-2">
-                            <p className="text-justify">Blok Mahakam, Lapangan Bekapai, Selat Makassar, Kalimantan Timur, Indonesia (Koordinat: 0°55'44.2"S 117°25'11.8"E).</p>
-                            <ProjectLocationMap className="h-[150px] max-h-[150px]" />
+                        <CardContent className="p-0 flex flex-col gap-2 mt-2">
+                            <p className="text-justify text-sm leading-relaxed">{lokasiDisplay}</p>
+                            <ProjectLocationMap lat={latVal} lon={lonVal} className="h-[150px] max-h-[150px] mt-2 rounded-md" />
                         </CardContent>
                     </Card>
                     <Separator />
@@ -94,8 +200,8 @@ export default function RingkasanProyekMenu() {
                         <CardHeader className="p-0">
                             <CardTitle className="text-sm text-muted-foreground flex gap-2 items-center"><TimerIcon className="w-4 h-4" /> Jangka Waktu Proyek</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-0 flex flex-col gap-2">
-                            25 tahun
+                        <CardContent className="p-0 flex flex-col gap-2 mt-2 text-sm">
+                            {hasParams ? `${params.duration} tahun` : "Belum diatur"}
                         </CardContent>
                     </Card>
                     <Separator />
@@ -103,30 +209,30 @@ export default function RingkasanProyekMenu() {
                         <CardHeader className="p-0">
                             <CardTitle className="text-sm text-muted-foreground flex gap-2 items-center">
                                 <UserIcon className="w-4 h-4" /> Manajer Proyek 
-                                <Badge variant="secondary">3</Badge>
+                                <Badge variant="secondary" className="ml-2">3</Badge>
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="p-0 flex flex-col gap-3">
+                        <CardContent className="p-0 flex flex-col gap-3 mt-3">
                             <div className="flex gap-3 items-center">
                                 <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>MR</AvatarFallback>
                                 </Avatar>
-                                <p className="font-medium">Muhammad Emir Rivaldy</p>
+                                <p className="font-medium text-sm">Muhammad Emir Rivaldy</p>
                             </div>
                             <div className="flex gap-3 items-center">
                                 <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>JD</AvatarFallback>
                                 </Avatar>
-                                <p className="font-medium">John Doe</p>
+                                <p className="font-medium text-sm">John Doe</p>
                             </div>
                             <div className="flex gap-3 items-center">
                                 <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>JD</AvatarFallback>
                                 </Avatar>
-                                <p className="font-medium">Jane Doe</p>
+                                <p className="font-medium text-sm">Jane Doe</p>
                             </div>
                         </CardContent>
                     </Card>

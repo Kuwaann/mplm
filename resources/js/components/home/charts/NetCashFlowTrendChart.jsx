@@ -38,7 +38,7 @@ const chartConfig = {
     },
 }
 
-export function NetCashFlowTrendChart() {
+export function NetCashFlowTrendChart({ data = chartData }) {
     return (
         <Card className="w-full">
             <CardHeader>
@@ -53,7 +53,7 @@ export function NetCashFlowTrendChart() {
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
                     <LineChart
                         accessibilityLayer
-                        data={chartData}
+                        data={data}
                         margin={{
                             right: 50,
                             left: 25,
