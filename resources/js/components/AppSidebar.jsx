@@ -95,7 +95,7 @@ export function AppSidebar() {
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarMenu>
+                    <SidebarMenu className="flex flex-col gap-1">
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild isActive={url === '/home'}>
                                 <Link href="/home" className="text-sm"><House />Beranda</Link>
@@ -106,7 +106,7 @@ export function AppSidebar() {
 
                 <SidebarGroup>
                     <SidebarGroupLabel asChild><label className="font-medium">Alat</label></SidebarGroupLabel>
-                    <SidebarMenu>
+                    <SidebarMenu className="flex flex-col gap-1">
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild isActive={url.startsWith('/kelola-proyek')}>
                                 <Link href={menus[1].href} className="text-sm">
@@ -137,7 +137,7 @@ export function AppSidebar() {
                                 </CollapsibleTrigger>
                             </SidebarGroupLabel>
                             <CollapsibleContent>
-                                <SidebarMenu>
+                                <SidebarMenu className="flex flex-col gap-1">
                                     {recentProjects.length > 0 ? (
                                         recentProjects.map((p) => (
                                             <SidebarMenuItem key={p.id}>

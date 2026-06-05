@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\ProjectEconomicParameter;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,7 +20,7 @@ class ProjectController extends Controller
 
         return Inertia::render('KelolaProyekPage', [
             'title' => 'Kelola Proyek',
-            'projects' => $projects
+            'projects' => $projects,
         ]);
     }
 
@@ -63,7 +62,7 @@ class ProjectController extends Controller
 
         return Inertia::render('DetilProyekPage', [
             'title' => 'Ringkasan Proyek',
-            'project' => $project
+            'project' => $project,
         ]);
     }
 
@@ -84,7 +83,7 @@ class ProjectController extends Controller
 
         return Inertia::render('DetilProyekDataPage', [
             'title' => 'Kalkulator Proyek',
-            'project' => $project
+            'project' => $project,
         ]);
     }
 

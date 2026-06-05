@@ -17,7 +17,6 @@ export default function DelayedProjects() {
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
                 <p className='text-3xl font-medium'>0</p>
-                <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
             </CardContent>
         </Card>
     )
