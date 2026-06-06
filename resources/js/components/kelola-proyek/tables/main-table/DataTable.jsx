@@ -26,7 +26,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Link, router } from "@inertiajs/react"
-
+import HapusProyekDialog from "../../HapusProyekDialog"
+import { useState } from "react"
 
 
 export function DataTable({ columns, data }) {
@@ -35,6 +36,9 @@ export function DataTable({ columns, data }) {
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null)
 
   return (
     <div className="rounded-md border mb-6">
@@ -98,11 +102,17 @@ export function DataTable({ columns, data }) {
                             <EyeIcon /> Detail proyek
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem><PencilIcon /> Edit proyek</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={row.original.id ? `/detil-proyek/${row.original.id}/pengaturan` : "/detil-proyek/pengaturan"}>
+                            <PencilIcon /> Edit proyek
+                          </Link>
+                        </DropdownMenuItem>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
-                        <DropdownMenuItem variant="destructive"><TrashIcon /> Hapus proyek</DropdownMenuItem>
+                        <DropdownMenuItem variant="destructive" onSelect={() => {
+                          setSelectedProject(row.original);
+                        }}><TrashIcon /> Hapus proyek</DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -118,6 +128,14 @@ export function DataTable({ columns, data }) {
           )}
         </TableBody>
       </Table>
+
+      <HapusProyekDialog
+        project={selectedProject}
+        open={!!selectedProject}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setSelectedProject(null)
+        }}
+      />
     </div>
   )
 }

@@ -1,18 +1,13 @@
 import Layout from "@/layouts/Layout"
-import { Separator } from "@/components/ui/separator"
-import ProjectNavigationMenu from "@/components/detil-proyek/ringkasan-proyek/ProjectNavigationMenu"
+import ProjectDetailLayout from "@/layouts/ProjectDetailLayout"
 import DataProyekCalculator from "@/components/detil-proyek/data/DataProyekCalculator"
 
 export default function DetilProyekDataPage({ project }) {
-    return (
-        <div className="detil-proyek-menu">
-            <header className="px-4 lg:px-6">
-                <ProjectNavigationMenu />
-            </header>
-            <Separator />
-            <DataProyekCalculator project={project} />
-        </div>
-    )
+    return <DataProyekCalculator project={project} />
 }
 
-DetilProyekDataPage.layout = (page) => <Layout>{page}</Layout>
+DetilProyekDataPage.layout = (page) => (
+    <Layout>
+        <ProjectDetailLayout>{page}</ProjectDetailLayout>
+    </Layout>
+)

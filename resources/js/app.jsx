@@ -11,7 +11,12 @@ createInertiaApp({
             console.error(`Page [${name}] not found in ./pages/`);
             return;
         }
-        return page.default || page;
+        const component = page.default || page;
+        // Support persistent layouts via .layout property
+        if (component.layout === undefined) {
+            // No default layout override here — pages define their own
+        }
+        return component;
     },
 
     setup({ el, App, props }) {
