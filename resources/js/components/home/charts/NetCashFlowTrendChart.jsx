@@ -45,7 +45,6 @@ export function NetCashFlowTrendChart({ data = chartData }) {
                 <CardTitle>Tren Net Cash Flow</CardTitle>
                 <CardDescription>Menampilkan fluktuasi arus kas bersih proyek sepanjang periode terpilih.</CardDescription>
                 <CardAction className="flex flex-row gap-3">
-                    <BandingkanDropdown />
                     <RentangWaktuSelect />
                 </CardAction>
             </CardHeader>
@@ -87,7 +86,7 @@ export function NetCashFlowTrendChart({ data = chartData }) {
                             strokeWidth={2}
                             dot={false}
                         />
-                        <ReferenceLine y={0}/>
+                        <ReferenceLine y={0} />
                     </LineChart>
                 </ChartContainer>
             </CardContent>
