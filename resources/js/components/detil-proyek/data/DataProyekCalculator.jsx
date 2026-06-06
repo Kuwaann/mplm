@@ -128,10 +128,6 @@ export default function DataProyekCalculator({ project }) {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3">
                         <h1 className="text-2xl font-medium">{project?.name || "Nama Proyek"}</h1>
-                        <Badge variant="outline" className="gap-1">
-                            <CircleIcon className="size-3 fill-emerald-500 text-emerald-500" />
-                            Data proyek
-                        </Badge>
                     </div>
                     <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                         <span>Durasi: {duration || "-"} tahun</span>
