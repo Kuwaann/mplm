@@ -89,24 +89,6 @@ export default function LoginPage() {
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-3">
-                        <Card className="border-border/70 bg-card/80 backdrop-blur">
-                            <CardContent className="p-5">
-                                <p className="text-sm text-muted-foreground">Proyek aktif</p>
-                                <p className="mt-2 text-2xl font-semibold">24</p>
-                            </CardContent>
-                        </Card>
-                        <Card className="border-border/70 bg-card/80 backdrop-blur">
-                            <CardContent className="p-5">
-                                <p className="text-sm text-muted-foreground">Investasi masuk</p>
-                                <p className="mt-2 text-2xl font-semibold">Rp 0,00</p>
-                            </CardContent>
-                        </Card>
-                        <Card className="border-border/70 bg-card/80 backdrop-blur">
-                            <CardContent className="p-5">
-                                <p className="text-sm text-muted-foreground">Net cash flow</p>
-                                <p className="mt-2 text-2xl font-semibold">Rp 0,00</p>
-                            </CardContent>
-                        </Card>
                     </div>
                 </section>
 

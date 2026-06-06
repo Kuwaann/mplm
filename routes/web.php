@@ -31,8 +31,3 @@ Route::get('/detil-proyek/{id?}', [ProjectController::class, 'show'])->name('pro
 Route::get('/detil-proyek/{id?}/data', [ProjectController::class, 'showCalculator'])->name('proyek.calculator');
 Route::post('/detil-proyek/{id}/parameter', [ProjectController::class, 'storeParameter'])->name('proyek.parameter.store');
 
-Route::get('/detil-proyek/data/tambah', function () {
-    return Inertia::render('TambahDataProyekPage', [
-        'title' => 'Tambah Data Proyek',
-    ]);
-});
