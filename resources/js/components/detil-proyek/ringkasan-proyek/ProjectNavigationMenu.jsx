@@ -47,8 +47,10 @@ export default function ProjectNavigationMenu() {
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem className={navMenuItemClass("/pengaturan")}>
-                    <NavigationMenuLink className="flex items-center gap-2 px-4 py-2 rounded-md text-muted-foreground hover:text-foreground">
-                        <Settings /> Pengaturan
+                    <NavigationMenuLink asChild>
+                        <Link href={id ? `/detil-proyek/${id}/pengaturan` : "/detil-proyek/pengaturan"} className={navLinkClass("/pengaturan")}>
+                            <Settings /> Pengaturan
+                        </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
             </NavigationMenuList>

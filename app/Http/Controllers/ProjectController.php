@@ -125,4 +125,55 @@ class ProjectController extends Controller
 
         return redirect()->back()->with('success', 'Parameter ekonomi berhasil disimpan!');
     }
+
+    /**
+     * Menampilkan halaman pengaturan proyek berdasarkan ID.
+     */
+    public function showSettings($id = null)
+    {
+        if ($id) {
+            $project = Project::with(['economicParameters' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])->findOrFail($id);
+        } else {
+            $project = Project::with(['economicParameters' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])->first();
+        }
+
+        return Inertia::render('PengaturanProyekPage', [
+            'title' => 'Pengaturan Proyek',
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Memperbarui pengaturan proyek (nama, deskripsi, lokasi, durasi).
+     */
+    public function updateSettings(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string',
+            'duration' => 'nullable|integer|min:0|max:25',
+        ]);
+
+        $project = Project::findOrFail($id);
+
+        $project->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'location' => $request->location,
+        ]);
+
+        // Update durasi di parameter ekonomi jika ada
+        if ($request->has('duration') && $project->economicParameters()->exists()) {
+            $project->economicParameters()->update([
+                'duration' => $request->duration,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Pengaturan proyek berhasil diperbarui!');
+    }
 }
