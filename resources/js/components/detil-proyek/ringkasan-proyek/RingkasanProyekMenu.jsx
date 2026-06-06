@@ -55,7 +55,7 @@ export default function RingkasanProyekMenu({ project }) {
                 lonVal = Number(locObj.lon)
             }
         }
-    } catch (e) {}
+    } catch (e) { }
 
     let simulation = null
     let totals = null
@@ -167,7 +167,7 @@ export default function RingkasanProyekMenu({ project }) {
                                     Proyek baru ini belum memiliki parameter data keekonomian. Untuk melihat analisis kelayakan, grafik arus kas kumulatif, dan metrik NPV/IRR, silakan tambahkan data parameter terlebih dahulu.
                                 </p>
                             </div>
-                            <Button asChild className="mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200 shadow-md">
+                            <Button asChild className="mt-2 bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200 shadow-md">
                                 <Link href={`/detil-proyek/${activeProject.id}/data`}>
                                     Atur Parameter Sekarang
                                 </Link>
@@ -208,7 +208,7 @@ export default function RingkasanProyekMenu({ project }) {
                     <Card className="bg-transparent border-none ring-0 p-0 rounded-none">
                         <CardHeader className="p-0">
                             <CardTitle className="text-sm text-muted-foreground flex gap-2 items-center">
-                                <UserIcon className="w-4 h-4" /> Manajer Proyek 
+                                <UserIcon className="w-4 h-4" /> Manajer Proyek
                                 <Badge variant="secondary" className="ml-2">3</Badge>
                             </CardTitle>
                         </CardHeader>

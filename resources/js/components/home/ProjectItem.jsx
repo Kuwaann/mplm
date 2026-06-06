@@ -9,7 +9,7 @@ export function ProjectItem({ name = "Proyek Tanpa Nama", ncf = 0, percent = 0 }
     }
 
     return (
-        <div className="flex flex-1 items-center justify-between gap-10 px-6 py-3 hover:bg-muted/30 transition-colors">
+        <div className="flex flex-initial items-center justify-between gap-10 px-6 py-3 hover:bg-muted/30 transition-colors">
             <div className="flex flex-1 flex-col justify-center items-start gap-1.5">
                 <div>
                     <p className="text-sm font-medium">{name}</p>

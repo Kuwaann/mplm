@@ -75,7 +75,7 @@ export function DataTable({ columns, data }) {
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="py-4 cursor-pointer hover:bg-muted/30 transition-colors"
+                    className="py-4 cursor-pointer"
                     onClick={() => {
                       const id = row.original.id;
                       const url = id ? `/detil-proyek/${id}` : "/detil-proyek";

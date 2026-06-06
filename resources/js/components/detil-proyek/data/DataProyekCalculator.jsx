@@ -143,7 +143,7 @@ export default function DataProyekCalculator({ project }) {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <Button asChild variant="outline" className="rounded-xl">
+                    <Button asChild variant="outline">
                         <Link href="/detil-proyek/data/tambah">
                             <PlusCircle className="size-4" />
                             Tambah data
@@ -152,7 +152,7 @@ export default function DataProyekCalculator({ project }) {
                     <Button
                         onClick={handleSave}
                         disabled={isSaving}
-                        className="rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200"
+                        className="bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200"
                     >
                         {isSaving ? (
                             <Loader2 className="size-4 animate-spin" />

@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import { PieChartIcon } from "lucide-react"
 import { Pie, PieChart } from "recharts"
 
 import {
@@ -29,19 +29,19 @@ const chartData = [
 const chartConfig = {
     kapital: {
         label: "Kapital",
-        color: "var(--chart-1)",
+        color: "var(--color-emerald-500)",
     },
     nonKapital: {
         label: "Non-kapital",
-        color: "var(--chart-2)",
+        color: "var(--color-amber-500)",
     },
 }
 
 export function AlokasiInvestasiChart({ capital = 0, nonCapital = 0 }) {
     const hasData = capital > 0 || nonCapital > 0;
     const chartData = [
-        { tipe: "kapital", jumlah: hasData ? capital : 1, fill: "var(--color-kapital)" },
-        { tipe: "nonKapital", jumlah: hasData ? nonCapital : 1, fill: "var(--color-nonKapital)" },
+        { tipe: "kapital", jumlah: hasData ? capital : 0, fill: "var(--color-kapital)" },
+        { tipe: "nonKapital", jumlah: hasData ? nonCapital : 0, fill: "var(--color-nonKapital)" },
     ];
 
     const formatCurrency = (num) => {
@@ -57,7 +57,7 @@ export function AlokasiInvestasiChart({ capital = 0, nonCapital = 0 }) {
                 <CardTitle>Alokasi Investasi</CardTitle>
                 <CardDescription>Perbandingan alokasi investasi kapital dan non-kapital.</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 pb-0">
+            <CardContent className="flex-1 flex flex-col pb-0">
                 <div className="flex justify-center items-center gap-5">
                     <div className="flex items-start justify-center gap-2">
                         <div className="w-1 rounded-full h-4 bg-emerald-500"></div>
@@ -76,24 +76,33 @@ export function AlokasiInvestasiChart({ capital = 0, nonCapital = 0 }) {
 
                     </div>
                 </div>
-                <ChartContainer
-                    config={chartConfig}
-                    className="aspect-square h-full w-full"
-                >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <ChartLegend content={<ChartLegendContent nameKey="tipe" />} />
-                        <Pie
-                            data={chartData}
-                            dataKey="jumlah"
-                            nameKey="tipe"
-                            innerRadius={60}
-                        />
-                    </PieChart>
-                </ChartContainer>
+                {hasData ? (
+                    <ChartContainer
+                        config={chartConfig}
+                        className="aspect-square h-full w-full"
+                    >
+                        <PieChart>
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <ChartLegend content={<ChartLegendContent nameKey="tipe" />} />
+                            <Pie
+                                data={chartData}
+                                dataKey="jumlah"
+                                nameKey="tipe"
+                                innerRadius={60}
+                            />
+                        </PieChart>
+                    </ChartContainer>
+                ) :
+                    (
+                        <div className="flex-1 flex flex-col py-20 justify-center items-center gap-3 px-10">
+                            <PieChartIcon className="text-muted-foreground w-10 h-10" />
+                            <p className="text-center text-muted-foreground">Grafik akan muncul setelah kamu menginput data alokasi investasi.</p>
+                        </div>
+                    )}
+
             </CardContent>
         </Card >
     )

@@ -20,7 +20,6 @@ export default function KelolaProyekPage({ projects }) {
             )}
             <div className="flex gap-3">
                 <ActiveProjects projects={projects?.data || projects} />
-                <DelayedProjects projects={projects?.data || projects} />
                 <FinishedProjects projects={projects?.data || projects} />
             </div>
             <MainSection projects={projects?.data || projects} />
