@@ -7,16 +7,17 @@ export default function chartFormatRupiah(value) {
     }
 
     else if (absoluteValue < 1000) {
-        return isNegativeValue ? `-$ ${absoluteValue}` : `$ ${absoluteValue}`;
+        const formattedValue = absoluteValue.toFixed(2);
+        return isNegativeValue ? `-$ ${formattedValue}` : `$ ${formattedValue}`;
     }
 
     else if (absoluteValue >= 1000 && absoluteValue < 1000000) {
-        const formattedValue = absoluteValue / 1000;
+        const formattedValue = (absoluteValue / 1000).toFixed(2);
         return isNegativeValue ? `-$ ${formattedValue}K` : `$ ${formattedValue}K`;
     }
 
     else if (absoluteValue >= 1000000) {
-        const formattedValue = absoluteValue / 1000000;
+        const formattedValue = (absoluteValue / 1000000).toFixed(2);
         return isNegativeValue ? `-$ ${formattedValue}M` : `$ ${formattedValue}M`;
     }
 }

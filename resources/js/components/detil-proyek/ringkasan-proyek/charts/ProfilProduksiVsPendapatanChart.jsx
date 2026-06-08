@@ -16,6 +16,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import chartFormatRupiah from "@/utils/chartFormatRupiah"
+import chartFormatMbbl from "@/utils/chartFormatMbbl"
 
 const chartData = [
     { tahun: 0, produksi: 100, pendapatan: 100 },
@@ -84,6 +85,7 @@ export function ProfilProduksiVsPendapatanChart({ data }) {
                             axisLine={false}
                             tickMargin={8}
                             tickCount={5}
+                            tickFormatter={chartFormatMbbl}
                             domain={['dataMin', 'dataMax']}
                         />
                         <YAxis

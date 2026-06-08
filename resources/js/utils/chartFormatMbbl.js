@@ -1,3 +1,3 @@
 export default function chartFormatMbbl(value) {
-    return `${value} Mbbl`
+    return `${value.toFixed(2)} Mbbl`
 }
