@@ -24,7 +24,7 @@ export default function TotalPendapatanProyek({ value = 0 }) {
                 <CardTitle className="text-xs opacity-50">Total Pendapatan Proyek</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
-                <p className='text-xl font-medium'><span className="text-muted-foreground">Rp</span> {formatCurrency(value)}</p>
+                <p className='text-xl font-medium'><span className="text-muted-foreground">USD</span> {formatCurrency(value)}</p>
                 <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
             </CardContent>
         </Card>
