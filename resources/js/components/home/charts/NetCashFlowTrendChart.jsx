@@ -20,8 +20,7 @@ import {
 import RentangWaktuSelect from "@/components/RentangWaktuSelect"
 import { BandingkanDropdown } from "../BandingkanDropdown"
 import chartFormatRupiah from "@/utils/chartFormatRupiah"
-
-export const description = "A line chart"
+import { useState, useMemo } from "react"
 
 const chartData = [
     { tahun: 2022, netCashFlow: 186000000 },
@@ -39,20 +38,40 @@ const chartConfig = {
 }
 
 export function NetCashFlowTrendChart({ data = chartData }) {
+    const [timeRange, setTimeRange] = useState("5");
+    const filteredData = useMemo(() => {
+        const limit = parseInt(timeRange, 10);
+        const startYear = data.length > 0 ? data[0].tahun : new Date().getFullYear();
+        const result = [];
+        for (let i = 0; i < limit; i++) {
+            const targetYear = startYear + i;
+            const existing = data.find(item => item.tahun === targetYear);
+            if (existing) {
+                result.push(existing);
+            } else {
+                result.push({
+                    tahun: targetYear,
+                    netCashFlow: 0,
+                });
+            }
+        }
+        return result;
+    }, [data, timeRange]);
+
     return (
         <Card className="w-full">
             <CardHeader>
                 <CardTitle>Tren Net Cash Flow</CardTitle>
                 <CardDescription>Menampilkan fluktuasi arus kas bersih proyek sepanjang periode terpilih.</CardDescription>
                 <CardAction className="flex flex-row gap-3">
-                    <RentangWaktuSelect />
+                    <RentangWaktuSelect timeRange={timeRange} setTimeRange={setTimeRange} />
                 </CardAction>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
                     <LineChart
                         accessibilityLayer
-                        data={data}
+                        data={filteredData}
                         margin={{
                             right: 50,
                             left: 25,

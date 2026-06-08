@@ -20,6 +20,7 @@ import {
 import RentangWaktuSelect from "@/components/RentangWaktuSelect"
 import { Badge } from "@/components/ui/badge"
 import { TrendingUpIcon, Settings } from 'lucide-react'
+import { useState, useMemo } from "react"
 
 export const description = "An area chart with gradient fill"
 
@@ -39,6 +40,26 @@ const chartConfig = {
 }
 
 export function ProfitTrendChart({ data = chartData, totalProfit = 0 }) {
+    const [timeRange, setTimeRange] = useState("5");
+    const filteredData = useMemo(() => {
+        const limit = parseInt(timeRange, 10);
+        const startYear = data.length > 0 ? data[0].tahun : new Date().getFullYear();
+        const result = [];
+        for (let i = 0; i < limit; i++) {
+            const targetYear = startYear + i;
+            const existing = data.find(item => item.tahun === targetYear);
+            if (existing) {
+                result.push(existing);
+            } else {
+                result.push({
+                    tahun: targetYear,
+                    netCashFlow: 0,
+                });
+            }
+        }
+        return result;
+    }, [data, timeRange]);
+
     const formatCurrency = (num) => {
         return new Intl.NumberFormat("id-ID", {
             minimumFractionDigits: 2,
@@ -54,7 +75,7 @@ export function ProfitTrendChart({ data = chartData, totalProfit = 0 }) {
                     Menampilkan perkembangan keuntungan bersih (laba) proyek dari waktu ke waktu.
                 </CardDescription>
                 <CardAction className="flex flex-row gap-3">
-                    <RentangWaktuSelect />
+                    <RentangWaktuSelect timeRange={timeRange} setTimeRange={setTimeRange} />
                 </CardAction>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4">
@@ -67,7 +88,7 @@ export function ProfitTrendChart({ data = chartData, totalProfit = 0 }) {
                 <ChartContainer config={chartConfig} className="w-full flex-1 min-h-[200px]">
                     <AreaChart
                         accessibilityLayer
-                        data={data}
+                        data={filteredData}
                         margin={{
                             right: 25,
                             left: 25,

@@ -26,8 +26,10 @@ import { AliranKasKumulatifChart } from "./charts/AliranKasKumulatifChart"
 import { ProfilProduksiVsPendapatanChart } from "./charts/ProfilProduksiVsPendapatanChart"
 import { NetCashFlowTrendProyekChart } from "./charts/NetCashFlowTrendProyekChart"
 import { simulateProjectEconomics } from "../../../utils/PetroleumEconomicsEngine"
+import { useState } from "react"
 
 export default function RingkasanProyekMenu({ project }) {
+    const [isFavorite, setIsFavorite] = useState(false);
     const activeProject = project
 
     if (!activeProject) {
@@ -111,6 +113,10 @@ export default function RingkasanProyekMenu({ project }) {
         }).format(date)
     }
 
+    const handleFavorite = () => {
+        setIsFavorite(!isFavorite)
+    }
+
     return (
         <main className="p-12">
             <header className="flex justify-between items-center mb-3">
@@ -134,7 +140,7 @@ export default function RingkasanProyekMenu({ project }) {
                         <span className="text-muted-foreground text-xs">Diperbarui: {formatDate(activeProject.updated_at)}</span>
                     </div>
                 </div>
-                <Button variant="outline"><StarIcon /> Favorit</Button>
+                <Button variant="outline" onClick={handleFavorite}><StarIcon className={isFavorite ? 'fill-amber-500 text-amber-500' : ''} /> {isFavorite ? 'Hapus dari Favorit' : 'Tambah ke Favorit'}</Button>
             </header>
             <Separator />
             <div className="flex justify-between items-start mt-12 gap-6">
