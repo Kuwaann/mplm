@@ -73,7 +73,7 @@ export function AppSidebar() {
     const menus = [
         {
             name: 'Beranda',
-            href: '/home'
+            href: '/beranda'
         },
         {
             name: 'Kelola Proyek',
@@ -97,8 +97,8 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarMenu className="flex flex-col gap-1">
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={url === '/home'}>
-                                <Link href="/home" className="text-sm"><House />Beranda</Link>
+                            <SidebarMenuButton asChild isActive={url === '/beranda'}>
+                                <Link href="/beranda" className="text-sm"><House />Beranda</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>

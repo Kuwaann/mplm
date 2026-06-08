@@ -136,7 +136,7 @@ export default function LoginPage() {
                                 </div>
 
                                 <Button asChild className="h-11 w-full rounded-xl">
-                                    <Link href="/home">
+                                    <Link href="/beranda">
                                         Masuk ke dashboard
                                         <ArrowRight className="size-4" />
                                     </Link>
