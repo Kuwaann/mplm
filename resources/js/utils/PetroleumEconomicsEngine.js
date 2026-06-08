@@ -344,6 +344,9 @@ export function simulateProjectEconomics(params) {
     const discountRate = parseFloat(params.discount_rate ?? 0.10);
     const deductInYear1 = params.deduct_investment_in_year_1 ?? true;
 
+    const initialProductionYears = parseInt(params.initial_production_years ?? 0);
+    const productionData = Array.isArray(params.production_data) ? params.production_data : [];
+
     const rows = [];
     const ncfArray = [];
     const totalInvestment = capital + non_capital;
@@ -372,14 +375,26 @@ export function simulateProjectEconomics(params) {
         ncfArray.push(0.0);
     }
 
-    let currentProd = productionY1;
+    let currentProd = 0;
+    let lastProduction = 0;
+    let cumulativeProduction = 0;
     let currentOpex = opexY1;
 
     for (let year = 1; year <= duration; year++) {
-        // 1. Produksi dengan decline (Mulai dari tahun ke-2)
-        if (year > 1) {
-            currentProd = calculateDeclineRate(currentProd, declineRate);
+        // 1. Produksi dengan decline / manual
+        if (year <= initialProductionYears) {
+            currentProd = parseFloat(productionData[year - 1] ?? 0.0);
+        } else {
+            if (year === 1) {
+                currentProd = productionY1;
+            } else {
+                currentProd = calculateDeclineRate(lastProduction, declineRate);
+            }
         }
+
+        const remainingReserve = Math.max(totalReserve - cumulativeProduction, 0);
+        currentProd = Math.min(currentProd, remainingReserve);
+        cumulativeProduction += currentProd;
 
         // 2. OPEX dengan eskalasi (Mulai dari tahun ke-2)
         if (year > 1) {
@@ -422,6 +437,8 @@ export function simulateProjectEconomics(params) {
             ncf,
             cumulative_ncf: cumulativeNcf
         });
+
+        lastProduction = currentProd;
     }
 
     // Hitung Total Akumulasi

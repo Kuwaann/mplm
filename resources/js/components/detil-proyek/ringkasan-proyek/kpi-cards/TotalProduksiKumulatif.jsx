@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function TotalProduksiKumulatif({ value = 0 }) {
     const formatNumber = (num) => {
-        return new Intl.NumberFormat("id-ID", {
+        return new Intl.NumberFormat("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         }).format(num)

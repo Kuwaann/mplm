@@ -50,10 +50,6 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        <Badge variant="outline" className="rounded-full px-3 py-1">
-                            <LockKeyhole className="mr-1 size-3.5" />
-                            Secure access
-                        </Badge>
                     </div>
 
                     <div className="my-10 grid gap-6 lg:my-0 lg:max-w-xl">

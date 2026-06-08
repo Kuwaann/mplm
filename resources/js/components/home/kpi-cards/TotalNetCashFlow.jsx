@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function TotalNetCashFlow({ value = 0 }) {
     const formatCurrency = (num) => {
-        return new Intl.NumberFormat("id-ID", {
+        return new Intl.NumberFormat("en-US", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(num)

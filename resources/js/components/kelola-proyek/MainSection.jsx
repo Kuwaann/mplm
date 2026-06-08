@@ -70,9 +70,9 @@ export default function MainSection({ projects = [] }) {
             }
 
             const formatCurrency = (num) => {
-                return new Intl.NumberFormat("id-ID", {
+                return new Intl.NumberFormat("en-US", {
                     style: "currency",
-                    currency: "IDR",
+                    currency: "USD",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }).format(num)

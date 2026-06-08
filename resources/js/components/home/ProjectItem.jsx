@@ -2,7 +2,7 @@ import { Progress } from "@/components/ui/progress"
 
 export function ProjectItem({ name = "Proyek Tanpa Nama", ncf = 0, percent = 0 }) {
     const formatCurrency = (num) => {
-        return new Intl.NumberFormat("id-ID", {
+        return new Intl.NumberFormat("en-US", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(num)
