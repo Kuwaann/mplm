@@ -37,7 +37,24 @@ export function DataTable({ columns, data }) {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const isAllSelected = data.length > 0 && selectedIds.length === data.length ? true : selectedIds.length > 0 ? "indeterminate" : false;
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      const allIds = data.map((item) => item.id);
+      setSelectedIds(allIds);
+    } else {
+      setSelectedIds([]);
+    }
+  }
+  const handleSelectItem = (itemId, checked) => {
+    if (checked) {
+      setSelectedIds((prev) => [...prev, itemId]);
+    } else {
+      setSelectedIds((prev) => prev.filter((itemIds) => itemIds !== itemId));
+    }
+  }
+
   const [selectedProject, setSelectedProject] = useState(null)
 
   return (
@@ -47,7 +64,7 @@ export function DataTable({ columns, data }) {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               <TableHead>
-                <Checkbox />
+                <Checkbox id="select-all-checkbox" checked={isAllSelected} onCheckedChange={(checked) => handleSelectAll(!!checked)} />
               </TableHead>
               {headerGroup.headers.map((header) => {
                 return (
@@ -74,7 +91,11 @@ export function DataTable({ columns, data }) {
                 data-state={row.getIsSelected() && "selected"}
               >
                 <TableCell className="py-4">
-                  <Checkbox />
+                  <Checkbox
+                    id={`checkbox-${row.original.id}`}
+                    checked={selectedIds.includes(row.original.id)}
+                    onCheckedChange={(checked) => handleSelectItem(row.original.id, !!checked)}
+                  />
                 </TableCell>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell

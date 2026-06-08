@@ -92,7 +92,7 @@ export default function CardsSection({ projects = [] }) {
     // 3. Konsolidasi Data Tren Tahunan (Kalendar 2026 - 2036)
     const annualData = useMemo(() => {
         const maxDuration = Math.max(...computedProjects.map(p => p.duration), 5)
-        const startYear = 2026
+        const startYear = new Date().getFullYear()
         const data = []
 
         for (let i = 0; i <= maxDuration; i++) {
