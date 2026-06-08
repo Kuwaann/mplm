@@ -81,7 +81,7 @@ export function ProfitTrendChart({ data = chartData, totalProfit = 0 }) {
             <CardContent className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center gap-2">
                     <p className="text-3xl font-medium">
-                        <span className="text-muted-foreground mr-1">Rp</span>
+                        <span className="text-muted-foreground mr-1">$</span>
                         {formatCurrency(totalProfit)} M
                     </p>
                 </div>

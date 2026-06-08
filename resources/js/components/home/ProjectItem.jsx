@@ -24,7 +24,7 @@ export function ProjectItem({ name = "Proyek Tanpa Nama", ncf = 0, percent = 0 }
             </div>
             <div className="text-right min-w-[120px]">
                 <p className="text-sm font-medium text-emerald-500">
-                    <span className="text-xs mr-0.5">Rp</span>
+                    <span className="text-xs mr-0.5">$</span>
                     {formatCurrency(ncf)} M
                 </p>
             </div>

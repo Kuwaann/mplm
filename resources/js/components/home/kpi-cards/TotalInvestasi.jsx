@@ -25,7 +25,7 @@ export default function TotalInvestasi({ value = 0 }) {
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
                 <p className='text-xl font-medium'>
-                    <span className="text-muted-foreground mr-1">Rp</span>
+                    <span className="text-muted-foreground mr-1">$</span>
                     {formatCurrency(value)} M
                 </p>
             </CardContent>

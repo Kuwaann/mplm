@@ -63,7 +63,7 @@ export function AlokasiInvestasiChart({ capital = 0, nonCapital = 0 }) {
                         <div className="w-1 rounded-full h-4 bg-emerald-500"></div>
                         <div>
                             <h3 className="text-muted-foreground text-md">Kapital</h3>
-                            <p className="text-xl font-medium"><span className="text-muted-foreground mr-1">Rp</span>{formatCurrency(capital)} M</p>
+                            <p className="text-xl font-medium"><span className="text-muted-foreground mr-1">$</span>{formatCurrency(capital)} M</p>
                         </div>
 
                     </div>
@@ -71,7 +71,7 @@ export function AlokasiInvestasiChart({ capital = 0, nonCapital = 0 }) {
                         <div className="w-1 rounded-full h-4 bg-amber-500"></div>
                         <div>
                             <h3 className="text-muted-foreground text-md">Non-Kapital</h3>
-                            <p className="text-xl font-medium"><span className="text-muted-foreground mr-1">Rp</span>{formatCurrency(nonCapital)} M</p>
+                            <p className="text-xl font-medium"><span className="text-muted-foreground mr-1">$</span>{formatCurrency(nonCapital)} M</p>
                         </div>
 
                     </div>

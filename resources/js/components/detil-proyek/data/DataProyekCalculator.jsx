@@ -267,10 +267,6 @@ export default function DataProyekCalculator({ project }) {
             <header className="mb-6 flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                     <h1 className="text-2xl font-medium">{project?.name || "Gunung Bakaran"}</h1>
-                    <Badge variant="outline" className="gap-1">
-                        <CircleIcon className="size-3 fill-emerald-500 text-emerald-500" />
-                        Kalkulator proyek
-                    </Badge>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                     <span>Durasi: {projectLife} tahun</span>
@@ -290,7 +286,7 @@ export default function DataProyekCalculator({ project }) {
                     <div className="rounded-xl border p-4">
                         <div className="mb-4 flex items-center justify-between gap-3">
                             <h3 className="text-sm font-medium">Reservoir & Production</h3>
-                            <Button type="button" variant="outline" onClick={handleSaveParameters}>
+                            <Button type="button" variant="" onClick={handleSaveParameters}>
                                 <Save className="size-4" />
                                 Simpan parameter
                             </Button>
