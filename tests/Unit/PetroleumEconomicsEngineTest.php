@@ -43,8 +43,8 @@ class PetroleumEconomicsEngineTest extends TestCase
         $production = 50.0; // dalam Mbbl
         $price = 60.0;      // USD/bbl
         
-        // Produksi Mbbl dikali 1000 agar menjadi bbl, lalu dikali harga
-        $expected = 50.0 * 1000 * 60.0; // 3.000.000
+        // Produksi Mbbl dikali 1 (karena output income di Excel berskala Ribu USD)
+        $expected = 50.0 * 60.0; // 3.000
         $actual = PetroleumEconomicsEngine::calculateGrossIncome($production, $price, true);
         
         $this->assertEquals($expected, $actual);

@@ -158,7 +158,7 @@ export default function DataProyekCalculator({ project }) {
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
 
-        router.post(`/detil-proyek/${project.id}/parameter`, {
+        router.post(`/kelola-proyek/detil-proyek/${project.id}/parameter`, {
             duration: projectLife === "" ? 1 : Number(projectLife),
             discount_rate: 10,
             tax_rate: taxRate === "" ? 0 : Number(taxRate),
@@ -254,7 +254,7 @@ export default function DataProyekCalculator({ project }) {
 
             depreciation = Math.min(depreciation, bookValue)
 
-            const income = production * 1000 * price
+            const income = production * price
             const taxableIncome = income - opex - depreciation
             const tax = taxableIncome > 0 ? taxableIncome * (taxPct / 100) : 0
             const ncf = income - opex - tax
@@ -540,28 +540,49 @@ export default function DataProyekCalculator({ project }) {
                                         Tahun
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[110px] align-middle text-center">
-                                        Produksi
+                                        <div className="flex flex-col">
+                                            <span>Produksi</span>
+                                            <span>(Mbbl)</span>
+                                        </div>
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[120px] align-middle text-center">
-                                        Income
+                                        <div className="flex flex-col">
+                                            <span>Income</span>
+                                            <span>($M)</span>
+                                        </div>
                                     </TableHead>
                                     <TableHead colSpan={2} className="text-center">
-                                        Investasi
+                                        Investasi ($M)
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[110px] align-middle text-center">
-                                        Opex
+                                        <div className="flex flex-col">
+                                            <span>Opex</span>
+                                            <span>($M)</span>
+                                        </div>
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[90px] align-middle text-center">
-                                        Di
+                                        <div className="flex flex-col">
+                                            <span>Di</span>
+                                            <span>($M)</span>
+                                        </div>
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[140px] align-middle text-center">
-                                        Taxable Income
+                                        <div className="flex flex-col">
+                                            <span>Taxable Income</span>
+                                            <span>($M)</span>
+                                        </div>
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[100px] align-middle text-center">
-                                        Tax
+                                        <div className="flex flex-col">
+                                            <span>Tax</span>
+                                            <span>($M)</span>
+                                        </div>
                                     </TableHead>
                                     <TableHead rowSpan={2} className="min-w-[160px] align-middle text-center">
-                                        NCF Undiscounted
+                                        <div className="flex flex-col">
+                                            <span>NCF Undiscounted</span>
+                                            <span>($M)</span>
+                                        </div>
                                     </TableHead>
                                 </TableRow>
                                 <TableRow>

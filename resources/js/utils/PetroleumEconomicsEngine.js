@@ -52,7 +52,7 @@ export function calculateOpexGrowth(prevOpex, growthRate) {
  * @returns {number} Pendapatan kotor tahun berjalan
  */
 export function calculateGrossIncome(production, oilPrice, isProductionInMbbl = true) {
-    const multiplier = isProductionInMbbl ? 1000 : 1;
+    const multiplier = isProductionInMbbl ? 1 : 1;
     return (production * multiplier) * oilPrice;
 }
 
@@ -171,18 +171,18 @@ export function calculateDepreciation(method, capitalCost, duration, year, addit
     switch (method) {
         case DEPRECIATION_METHODS.STRAIGHT_LINE:
             return calculateStraightLineDepreciation(capitalCost, duration);
-            
+
         case DEPRECIATION_METHODS.DECLINING_BALANCE:
             return calculateDecliningBalanceDepreciation(capitalCost, duration, year);
-            
+
         case DEPRECIATION_METHODS.UNIT_OF_PRODUCTION:
             const production = additionalParams.production ?? 0.0;
             const totalReserve = additionalParams.total_reserve ?? 0.0;
             return calculateUnitOfProductionDepreciation(production, totalReserve, capitalCost);
-            
+
         case DEPRECIATION_METHODS.SUM_OF_THE_YEAR_DIGITS:
             return calculateSumOfTheYearDigitsDepreciation(capitalCost, duration, year);
-            
+
         default:
             return 0.0;
     }
@@ -372,6 +372,19 @@ export function simulateProjectEconomics(params) {
         cumulativeNcf = -totalInvestment;
     } else {
         // Buat index 0 bernilai 0 jika investasi di tahun 1, agar indexing tahun sesuai
+        rows.push({
+            year: 0,
+            production: 0.0,
+            income: 0.0,
+            capital: 0.0,
+            non_capital: 0.0,
+            opex: 0.0,
+            depreciation: 0.0,
+            taxable_income: 0.0,
+            tax: 0.0,
+            ncf: 0.0,
+            cumulative_ncf: 0.0
+        });
         ncfArray.push(0.0);
     }
 

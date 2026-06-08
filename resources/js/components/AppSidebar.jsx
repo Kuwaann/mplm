@@ -141,8 +141,8 @@ export function AppSidebar() {
                                     {recentProjects.length > 0 ? (
                                         recentProjects.map((p) => (
                                             <SidebarMenuItem key={p.id}>
-                                                <SidebarMenuButton asChild isActive={url.startsWith(`/detil-proyek/${p.id}`)}>
-                                                    <Link href={`/detil-proyek/${p.id}`} className="text-sm truncate">
+                                                <SidebarMenuButton asChild isActive={url.startsWith(`/kelola-proyek/detil-proyek/${p.id}`)}>
+                                                    <Link href={`/kelola-proyek/detil-proyek/${p.id}`} className="text-sm truncate">
                                                         {p.name}
                                                     </Link>
                                                 </SidebarMenuButton>

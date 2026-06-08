@@ -103,7 +103,7 @@ export function DataTable({ columns, data }) {
                     className="py-4 cursor-pointer"
                     onClick={() => {
                       const id = row.original.id;
-                      const url = id ? `/detil-proyek/${id}` : "/detil-proyek";
+                      const url = id ? `/kelola-proyek/detil-proyek/${id}` : "/kelola-proyek/detil-proyek";
                       router.visit(url);
                     }}
                   >
@@ -119,12 +119,12 @@ export function DataTable({ columns, data }) {
                       <DropdownMenuLabel>Aksi proyek</DropdownMenuLabel>
                       <DropdownMenuGroup>
                         <DropdownMenuItem asChild>
-                          <Link href={row.original.id ? `/detil-proyek/${row.original.id}` : "/detil-proyek"}>
+                          <Link href={row.original.id ? `/kelola-proyek/detil-proyek/${row.original.id}` : "/kelola-proyek/detil-proyek"}>
                             <EyeIcon /> Detail proyek
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={row.original.id ? `/detil-proyek/${row.original.id}/pengaturan` : "/detil-proyek/pengaturan"}>
+                          <Link href={row.original.id ? `/kelola-proyek/detil-proyek/${row.original.id}/pengaturan` : "/kelola-proyek/detil-proyek/pengaturan"}>
                             <PencilIcon /> Edit proyek
                           </Link>
                         </DropdownMenuItem>

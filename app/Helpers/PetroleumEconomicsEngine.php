@@ -58,7 +58,7 @@ class PetroleumEconomicsEngine
      */
     public static function calculateGrossIncome(float $production, float $oilPrice, bool $isProductionInMbbl = true): float
     {
-        $multiplier = $isProductionInMbbl ? 1000 : 1;
+        $multiplier = $isProductionInMbbl ? 1 : 1;
         return ($production * $multiplier) * $oilPrice;
     }
 

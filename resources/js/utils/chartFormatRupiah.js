@@ -12,8 +12,8 @@ export default function chartFormatRupiah(value) {
     }
 
     else if (absoluteValue >= 1000 && absoluteValue < 1000000) {
-        const formattedValue = (absoluteValue / 1000).toFixed(2);
-        return isNegativeValue ? `-$ ${formattedValue}K` : `$ ${formattedValue}K`;
+        const formattedValue = absoluteValue.toLocaleString('en-US');
+        return isNegativeValue ? `-$ ${formattedValue}M` : `$ ${formattedValue}M`;
     }
 
     else if (absoluteValue >= 1000000) {

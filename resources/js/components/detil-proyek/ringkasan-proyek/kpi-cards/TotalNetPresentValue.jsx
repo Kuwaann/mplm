@@ -13,8 +13,8 @@ import { Badge } from "@/components/ui/badge"
 export default function TotalNetPresentValue({ value = 0 }) {
     const formatCurrency = (num) => {
         return new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
         }).format(num)
     }
 
@@ -24,7 +24,7 @@ export default function TotalNetPresentValue({ value = 0 }) {
                 <CardTitle className="text-xs opacity-50">Net Present Value (NPV)</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto flex flex-row gap-3 items-center">
-                <p className='text-xl font-medium'><span className="text-muted-foreground">$</span> {formatCurrency(value)}</p>
+                <p className='text-xl font-medium'><span className="text-muted-foreground">$</span> {formatCurrency(value)} M</p>
                 <Badge variant="outline" ><TrendingUpIcon className="text-emerald-500 w-4 h-4" /> <p className="text-emerald-500">+2</p></Badge>
             </CardContent>
         </Card>

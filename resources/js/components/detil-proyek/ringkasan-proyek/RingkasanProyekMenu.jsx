@@ -83,6 +83,7 @@ export default function RingkasanProyekMenu({ project }) {
             total_reserve: Number(params.total_reserve || 0),
             initial_production_years: Number(params.initial_production_years || 0),
             production_data: params.production_data,
+            deduct_investment_in_year_1: false
         })
 
         totals = simulation.totals
@@ -90,17 +91,17 @@ export default function RingkasanProyekMenu({ project }) {
 
         // Siapkan data grafik dari baris-baris simulasi
         kasKumulatifData = simulation.rows.map(row => ({
-            tahun: `Thn ${row.year}`,
+            tahun: `${row.year}`,
             arusKas: row.cumulative_ncf
         }))
 
         netCashFlowData = simulation.rows.map(row => ({
-            tahun: `Thn ${row.year}`,
+            tahun: `${row.year}`,
             netCashFlow: row.ncf
         }))
 
         produksiVsPendapatanData = simulation.rows.filter(row => row.year > 0).map(row => ({
-            tahun: `Thn ${row.year}`,
+            tahun: `${row.year}`,
             produksi: row.production,
             pendapatan: row.income
         }))
@@ -177,7 +178,7 @@ export default function RingkasanProyekMenu({ project }) {
                                 </p>
                             </div>
                             <Button asChild className="mt-2 bg-emerald-600 hover:bg-emerald-500 text-white gap-2 transition-colors duration-200 shadow-md">
-                                <Link href={`/detil-proyek/${activeProject.id}/data`}>
+                                <Link href={`/kelola-proyek/detil-proyek/${activeProject.id}/data`}>
                                     Atur Parameter Sekarang
                                 </Link>
                             </Button>

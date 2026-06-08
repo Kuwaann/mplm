@@ -168,7 +168,7 @@ export default function PengaturanProyekPage({ project }) {
             location: locationJson,
         }))
 
-        put(`/detil-proyek/${project.id}/pengaturan`, {
+        put(`/kelola-proyek/detil-proyek/${project.id}/pengaturan`, {
             preserveScroll: true,
         })
     }

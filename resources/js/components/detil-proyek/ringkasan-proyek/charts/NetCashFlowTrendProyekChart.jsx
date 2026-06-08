@@ -114,7 +114,7 @@ export function NetCashFlowTrendProyekChart({ data }) {
               fillOpacity={0.4}
               stroke="var(--color-netCashFlow)"
             />
-            <ReferenceLine y={0}/>
+            <ReferenceLine y={0} />
           </AreaChart>
         </ChartContainer>
       </CardContent>
