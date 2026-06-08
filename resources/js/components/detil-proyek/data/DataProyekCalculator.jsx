@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { router } from "@inertiajs/react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -22,27 +23,27 @@ import {
 } from "@/components/ui/table"
 import { CircleIcon, Save } from "lucide-react"
 
-const STORAGE_KEY = "mplm-data-proyek-parameters"
-
-const defaultManualProductions = [175, 201, 217, 198]
+const defaultManualProductions = []
 
 const defaultParameters = {
-    reserve: 4320,
-    manualProductionYears: 4,
+    reserve: "",
+    manualProductionYears: "",
     manualProductions: defaultManualProductions,
-    declineRate: 3,
-    capitalCost: 13000,
-    nonCapitalCost: 8000,
-    initialOpex: 180,
-    fixedUntilYear: 3,
-    opexGrowthRate: 2.5,
-    oilPrice: 32,
-    taxRate: 51,
-    projectLife: 10,
-    depreciationMethod: "straight_line",
+    declineRate: "",
+    capitalCost: "",
+    nonCapitalCost: "",
+    initialOpex: "",
+    fixedUntilYear: "",
+    opexGrowthRate: "",
+    oilPrice: "",
+    taxRate: "",
+    projectLife: "",
+    depreciationMethod: "",
 }
 
 export default function DataProyekCalculator({ project }) {
+    const STORAGE_KEY = project?.id ? `mplm-data-proyek-parameters-${project.id}` : "mplm-data-proyek-parameters"
+
     const [reserve, setReserve] = useState(defaultParameters.reserve)
     const [manualProductionYears, setManualProductionYears] = useState(defaultParameters.manualProductionYears)
     const [manualProductions, setManualProductions] = useState(defaultParameters.manualProductions)
@@ -59,9 +60,43 @@ export default function DataProyekCalculator({ project }) {
     const [savedStatus, setSavedStatus] = useState("")
 
     useEffect(() => {
+        const dbParams = project?.economic_parameters?.[0]
+        if (dbParams) {
+            setReserve(dbParams.total_reserve ?? "")
+            setManualProductionYears(dbParams.initial_production_years ?? "")
+            setManualProductions(Array.isArray(dbParams.production_data) ? dbParams.production_data : [])
+            setDeclineRate(dbParams.decline_rate !== undefined && dbParams.decline_rate !== null ? dbParams.decline_rate * 100 : "")
+            setCapitalCost(dbParams.capital_investment ?? "")
+            setNonCapitalCost(dbParams.non_capital_investment ?? "")
+            setInitialOpex(dbParams.opex_y1 ?? "")
+            setFixedUntilYear(3) // default fallback
+            setOpexGrowthRate(dbParams.opex_growth !== undefined && dbParams.opex_growth !== null ? dbParams.opex_growth * 100 : "")
+            setOilPrice(dbParams.oil_price ?? "")
+            setTaxRate(dbParams.tax_rate !== undefined && dbParams.tax_rate !== null ? dbParams.tax_rate * 100 : "")
+            setProjectLife(dbParams.duration ?? "")
+            setDepreciationMethod(dbParams.depreciation_method ?? "")
+            return
+        }
+
         try {
             const raw = localStorage.getItem(STORAGE_KEY)
-            if (!raw) return
+            if (!raw) {
+                // Reset state to empty defaults when there are no saved parameters for this project
+                setReserve(defaultParameters.reserve)
+                setManualProductionYears(defaultParameters.manualProductionYears)
+                setManualProductions(defaultParameters.manualProductions)
+                setDeclineRate(defaultParameters.declineRate)
+                setCapitalCost(defaultParameters.capitalCost)
+                setNonCapitalCost(defaultParameters.nonCapitalCost)
+                setInitialOpex(defaultParameters.initialOpex)
+                setFixedUntilYear(defaultParameters.fixedUntilYear)
+                setOpexGrowthRate(defaultParameters.opexGrowthRate)
+                setOilPrice(defaultParameters.oilPrice)
+                setTaxRate(defaultParameters.taxRate)
+                setProjectLife(defaultParameters.projectLife)
+                setDepreciationMethod(defaultParameters.depreciationMethod)
+                return
+            }
 
             const parsed = JSON.parse(raw)
 
@@ -81,12 +116,14 @@ export default function DataProyekCalculator({ project }) {
         } catch {
             // abaikan jika data localStorage rusak
         }
-    }, [])
+    }, [STORAGE_KEY, project?.economic_parameters])
 
     useEffect(() => {
+        if (manualProductionYears === "") return
         const years = Math.max(1, Math.min(25, Number(manualProductionYears) || 1))
 
         setManualProductions((prev) => {
+            if (prev.length === years) return prev
             const next = [...prev.slice(0, years)]
             while (next.length < years) {
                 next.push("")
@@ -120,8 +157,34 @@ export default function DataProyekCalculator({ project }) {
         }
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
-        setSavedStatus("Parameter tersimpan")
-        setTimeout(() => setSavedStatus(""), 2000)
+        
+        router.post(`/detil-proyek/${project.id}/parameter`, {
+            duration: projectLife === "" ? 1 : Number(projectLife),
+            discount_rate: 10,
+            tax_rate: taxRate === "" ? 0 : Number(taxRate),
+            capital_investment: capitalCost === "" ? 0 : Number(capitalCost),
+            non_capital_investment: nonCapitalCost === "" ? 0 : Number(nonCapitalCost),
+            depreciation_method: depreciationMethod || 'straight_line',
+            total_reserve: reserve === "" ? 0 : Number(reserve),
+            production_y1: manualProductions[0] === "" || manualProductions[0] === undefined ? 0 : Number(manualProductions[0]),
+            decline_rate: declineRate === "" ? 0 : Number(declineRate),
+            oil_price: oilPrice === "" ? 0 : Number(oilPrice),
+            opex_y1: initialOpex === "" ? 0 : Number(initialOpex),
+            opex_growth: opexGrowthRate === "" ? 0 : Number(opexGrowthRate),
+            initial_production_years: manualProductionYears === "" ? 0 : Number(manualProductionYears),
+            production_data: manualProductions.map(val => val === "" ? 0 : Number(val)),
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setSavedStatus("Parameter tersimpan di database")
+                setTimeout(() => setSavedStatus(""), 2000)
+            },
+            onError: (errors) => {
+                console.error("Gagal menyimpan parameter:", errors)
+                setSavedStatus("Gagal menyimpan parameter")
+                setTimeout(() => setSavedStatus(""), 3000)
+            }
+        })
     }
 
     const rows = useMemo(() => {
@@ -134,9 +197,10 @@ export default function DataProyekCalculator({ project }) {
         const opexBase = Number(initialOpex) || 0
         const opexGrowth = Number(opexGrowthRate) || 0
 
+        console.log("rows calculation debug:", { taxRate, taxPct, capitalCost, projectLife })
         const result = []
         let cumulativeProduction = 0
-        let bookValue = Number(capitalCost) + Number(nonCapitalCost)
+        let bookValue = Number(capitalCost)
 
         result.push({
             year: 0,
@@ -177,15 +241,15 @@ export default function DataProyekCalculator({ project }) {
 
             let depreciation = 0
             if (depreciationMethod === "straight_line") {
-                depreciation = (Number(capitalCost) + Number(nonCapitalCost)) / life
+                depreciation = Number(capitalCost) / life
             } else if (depreciationMethod === "declining_balance") {
                 const dbRate = 2 / life
                 depreciation = bookValue * dbRate
             } else if (depreciationMethod === "sum_of_years_digits") {
                 const syd = (life * (life + 1)) / 2
-                depreciation = ((Number(capitalCost) + Number(nonCapitalCost)) * (life - year + 1)) / syd
+                depreciation = (Number(capitalCost) * (life - year + 1)) / syd
             } else if (depreciationMethod === "unit_of_production") {
-                depreciation = reserveLimit > 0 ? (Number(capitalCost) + Number(nonCapitalCost)) * (production / reserveLimit) : 0
+                depreciation = reserveLimit > 0 ? Number(capitalCost) * (production / reserveLimit) : 0
             }
 
             depreciation = Math.min(depreciation, bookValue)
@@ -193,7 +257,7 @@ export default function DataProyekCalculator({ project }) {
             const income = production * price
             const taxableIncome = income - opex - depreciation
             const tax = taxableIncome > 0 ? taxableIncome * (taxPct / 100) : 0
-            const ncf = income - opex - depreciation - tax
+            const ncf = income - opex - tax
 
             cumulativeProduction += production
             bookValue = Math.max(bookValue - depreciation, 0)

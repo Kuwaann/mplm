@@ -77,7 +77,10 @@ export default function RingkasanProyekMenu({ project }) {
             opex_growth: Number(params.opex_growth || 0),
             tax_rate: Number(params.tax_rate),
             depreciation_method: params.depreciation_method || 'straight_line',
-            deduct_investment_in_year_1: true
+            deduct_investment_in_year_1: true,
+            total_reserve: Number(params.total_reserve || 0),
+            initial_production_years: Number(params.initial_production_years || 0),
+            production_data: params.production_data,
         })
 
         totals = simulation.totals

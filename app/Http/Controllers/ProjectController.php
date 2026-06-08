@@ -101,6 +101,12 @@ class ProjectController extends Controller
             'oil_price' => 'required|numeric|min:0',
             'opex_y1' => 'required|numeric|min:0',
             'tax_rate' => 'required|numeric|min:0|max:100',
+            'discount_rate' => 'nullable|numeric|min:0|max:100',
+            'depreciation_method' => 'nullable|string|max:100',
+            'total_reserve' => 'nullable|numeric|min:0',
+            'opex_growth' => 'nullable|numeric|min:0|max:100',
+            'initial_production_years' => 'nullable|integer|min:0|max:25',
+            'production_data' => 'nullable|array',
         ]);
 
         $project = Project::findOrFail($id);
@@ -110,16 +116,19 @@ class ProjectController extends Controller
             ['project_id' => $id], // Kriteria pencarian
             [
                 'duration' => $request->duration,
-                'discount_rate' => 0.10, // Default 10%
-                'tax_rate' => $request->tax_rate / 100, // Konversi ke desimal desimal
+                'discount_rate' => ($request->discount_rate ?? 10) / 100, // Konversi ke desimal
+                'tax_rate' => $request->tax_rate / 100, // Konversi ke desimal
                 'capital_investment' => $request->capital_investment,
                 'non_capital_investment' => $request->non_capital_investment,
-                'depreciation_method' => 'straight_line',
+                'depreciation_method' => $request->depreciation_method ?? 'straight_line',
+                'total_reserve' => $request->total_reserve,
                 'production_y1' => $request->production_y1,
-                'decline_rate' => $request->decline_rate / 100, // Konversi ke desimal desimal
+                'decline_rate' => $request->decline_rate / 100, // Konversi ke desimal
                 'oil_price' => $request->oil_price,
                 'opex_y1' => $request->opex_y1,
-                'opex_growth' => 0.00, // Default growth 0%
+                'opex_growth' => ($request->opex_growth ?? 0) / 100, // Konversi ke desimal
+                'initial_production_years' => $request->initial_production_years,
+                'production_data' => $request->production_data,
             ]
         );
 
@@ -167,11 +176,29 @@ class ProjectController extends Controller
             'location' => $request->location,
         ]);
 
-        // Update durasi di parameter ekonomi jika ada
-        if ($request->has('duration') && $project->economicParameters()->exists()) {
-            $project->economicParameters()->update([
-                'duration' => $request->duration,
-            ]);
+        // Update atau buat parameter ekonomi baru dengan durasi ini
+        if ($request->has('duration')) {
+            if ($project->economicParameters()->exists()) {
+                $project->economicParameters()->update([
+                    'duration' => $request->duration,
+                ]);
+            } else {
+                $project->economicParameters()->create([
+                    'duration' => $request->duration ?? 10,
+                    'discount_rate' => 0.10,
+                    'tax_rate' => 0.51,
+                    'capital_investment' => 0.00,
+                    'non_capital_investment' => 0.00,
+                    'depreciation_method' => 'straight_line',
+                    'production_y1' => 0.00,
+                    'decline_rate' => 0.00,
+                    'oil_price' => 0.00,
+                    'opex_y1' => 0.00,
+                    'opex_growth' => 0.00,
+                    'initial_production_years' => 0,
+                    'production_data' => [],
+                ]);
+            }
         }
 
         return redirect()->back()->with('success', 'Pengaturan proyek berhasil diperbarui!');

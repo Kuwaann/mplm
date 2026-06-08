@@ -25,6 +25,8 @@ class ProjectEconomicParameter extends Model
         'oil_price',
         'opex_y1',
         'opex_growth',
+        'initial_production_years',
+        'production_data',
     ];
 
     protected $casts = [
@@ -39,6 +41,8 @@ class ProjectEconomicParameter extends Model
         'oil_price' => 'float',
         'opex_y1' => 'float',
         'opex_growth' => 'float',
+        'initial_production_years' => 'integer',
+        'production_data' => 'array',
     ];
 
     /**
