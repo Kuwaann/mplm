@@ -50,7 +50,7 @@ export default function PengaturanProyekPage({ project }) {
     const [loadingProvinces, setLoadingProvinces] = useState(false)
     const [loadingCities, setLoadingCities] = useState(false)
 
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing, errors, transform } = useForm({
         name: project?.name || "",
         description: project?.description || "",
         duration: project?.economic_parameters?.[0]?.duration || 0,
@@ -163,13 +163,12 @@ export default function PengaturanProyekPage({ project }) {
             lon
         })
 
+        transform((data) => ({
+            ...data,
+            location: locationJson,
+        }))
+
         put(`/detil-proyek/${project.id}/pengaturan`, {
-            data: {
-                name: data.name,
-                description: data.description,
-                duration: data.duration,
-                location: locationJson,
-            },
             preserveScroll: true,
         })
     }
@@ -271,129 +270,146 @@ export default function PengaturanProyekPage({ project }) {
                             <CardDescription>Informasi lokasi geografis dan koordinat proyek.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex flex-col gap-4">
-                                <div className="flex flex-col gap-2">
-                                    <Label htmlFor="pengaturan-negara">Negara</Label>
+                            <div className="border border-muted/50 rounded-xl p-3 bg-muted/10 space-y-3">
+                                <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                                    <MapPinIcon className="size-3.5 text-emerald-500" /> Detail Lokasi Geografis
+                                </h4>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <Label htmlFor="negara-proyek" className="text-xs">Negara</Label>
                                     <select
-                                        id="pengaturan-negara"
+                                        id="negara-proyek"
                                         value={country}
                                         onChange={(e) => setCountry(e.target.value)}
-                                        className="w-full max-w-[300px] rounded-lg border border-input bg-background h-9 px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-input/20"
+                                        className="w-full rounded-lg border border-input bg-background/50 h-9 px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-input/20 dark:text-foreground text-black bg-white dark:bg-slate-900"
+                                        required
                                     >
-                                        <option value="Indonesia">Indonesia</option>
-                                        <option value="Malaysia">Malaysia</option>
-                                        <option value="Brunei">Brunei</option>
-                                        <option value="Lainnya">Lainnya...</option>
+                                        <option value="Indonesia" className="bg-white text-black dark:bg-slate-950 dark:text-white">Indonesia</option>
+                                        <option value="Malaysia" className="bg-white text-black dark:bg-slate-950 dark:text-white">Malaysia</option>
+                                        <option value="Brunei" className="bg-white text-black dark:bg-slate-950 dark:text-white">Brunei</option>
+                                        <option value="Lainnya" className="bg-white text-black dark:bg-slate-950 dark:text-white">Lainnya...</option>
                                     </select>
                                 </div>
 
                                 {country === "Indonesia" ? (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="flex flex-col gap-2">
-                                            <Label htmlFor="pengaturan-provinsi">Provinsi</Label>
-                                            <select
-                                                id="pengaturan-provinsi"
-                                                value={provinceId}
-                                                onChange={handleProvinceChange}
-                                                className="w-full rounded-lg border border-input bg-background h-9 px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-input/20"
-                                                disabled={loadingProvinces}
-                                            >
-                                                <option value="">Pilih Provinsi...</option>
-                                                {provincesList.map((prov) => (
-                                                    <option key={prov.id} value={prov.id}>
-                                                        {toTitleCase(prov.name)}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label htmlFor="pengaturan-kota">Kota / Kabupaten</Label>
-                                            <select
-                                                id="pengaturan-kota"
-                                                value={city}
-                                                onChange={handleCityChange}
-                                                className="w-full rounded-lg border border-input bg-background h-9 px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-input/20"
-                                                disabled={loadingCities || !provinceId}
-                                            >
-                                                <option value="">Pilih Kota/Kab...</option>
-                                                {citiesList.map((c) => {
-                                                    const formattedCity = toTitleCase(c.name)
-                                                    return (
-                                                        <option key={c.id} value={formattedCity}>
-                                                            {formattedCity}
+                                    <>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex flex-col gap-1.5">
+                                                <Label htmlFor="provinsi-proyek" className="text-xs">Provinsi</Label>
+                                                <select
+                                                    id="provinsi-proyek"
+                                                    value={provinceId}
+                                                    onChange={handleProvinceChange}
+                                                    className="w-full rounded-lg border border-input bg-background/50 h-9 px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-input/20 dark:text-foreground text-black bg-white dark:bg-slate-900"
+                                                    disabled={loadingProvinces}
+                                                    required
+                                                >
+                                                    <option value="" className="bg-white text-black dark:bg-slate-950 dark:text-white">Pilih Provinsi...</option>
+                                                    {provincesList.map((prov) => (
+                                                        <option key={prov.id} value={prov.id} className="bg-white text-black dark:bg-slate-950 dark:text-white">
+                                                            {toTitleCase(prov.name)}
                                                         </option>
-                                                    )
-                                                })}
-                                            </select>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <Label htmlFor="kota-proyek" className="text-xs">Kota / Kabupaten</Label>
+                                                <select
+                                                    id="kota-proyek"
+                                                    value={city}
+                                                    onChange={handleCityChange}
+                                                    className="w-full rounded-lg border border-input bg-background/50 h-9 px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-input/20 dark:text-foreground text-black bg-white dark:bg-slate-900"
+                                                    disabled={loadingCities || !provinceId}
+                                                    required
+                                                >
+                                                    <option value="" className="bg-white text-black dark:bg-slate-950 dark:text-white">Pilih Kota/Kab...</option>
+                                                    {citiesList.map((c) => {
+                                                        const formattedCity = toTitleCase(c.name);
+                                                        return (
+                                                            <option key={c.id} value={formattedCity} className="bg-white text-black dark:bg-slate-950 dark:text-white">
+                                                                {formattedCity}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </>
                                 ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="flex flex-col gap-2">
-                                            <Label htmlFor="pengaturan-provinsi-manual">Provinsi</Label>
-                                            <Input
-                                                id="pengaturan-provinsi-manual"
-                                                value={province}
-                                                onChange={(e) => setProvince(e.target.value)}
-                                                placeholder="Contoh: Sarawak"
-                                            />
+                                    <>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex flex-col gap-1.5">
+                                                <Label htmlFor="provinsi-proyek-manual" className="text-xs">Provinsi</Label>
+                                                <Input
+                                                    id="provinsi-proyek-manual"
+                                                    value={province}
+                                                    onChange={(e) => setProvince(e.target.value)}
+                                                    placeholder="Contoh: Sarawak"
+                                                    className="h-9 text-xs"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <Label htmlFor="kota-proyek-manual" className="text-xs">Kota / Kabupaten</Label>
+                                                <Input
+                                                    id="kota-proyek-manual"
+                                                    value={city}
+                                                    onChange={(e) => setCity(e.target.value)}
+                                                    placeholder="Contoh: Miri"
+                                                    className="h-9 text-xs"
+                                                    required
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label htmlFor="pengaturan-kota-manual">Kota / Kabupaten</Label>
-                                            <Input
-                                                id="pengaturan-kota-manual"
-                                                value={city}
-                                                onChange={(e) => setCity(e.target.value)}
-                                                placeholder="Contoh: Miri"
-                                            />
-                                        </div>
-                                        <div className="col-span-2 flex justify-end">
+                                        <div className="flex justify-end">
                                             <Button
                                                 type="button"
                                                 variant="secondary"
                                                 onClick={() => lookupCoordinates(country, province, city)}
                                                 disabled={resolving || !city.trim()}
-                                                className="text-sm bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20"
+                                                className="h-9 text-xs px-3 bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20"
                                             >
-                                                {resolving && <Loader2 className="h-4 w-4 animate-spin mr-1" />}
+                                                {resolving ? (
+                                                    <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                                                ) : null}
                                                 Cari Koordinat
                                             </Button>
                                         </div>
-                                    </div>
+                                    </>
                                 )}
 
-                                <Separator />
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="flex flex-col gap-2">
-                                        <Label htmlFor="pengaturan-lat">Latitude (Lintang)</Label>
+                                <div className="grid grid-cols-2 gap-3 p-2 bg-muted/40 rounded-lg text-xs">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-muted-foreground text-[10px]">Latitude (Lintang)</span>
                                         <Input
-                                            id="pengaturan-lat"
                                             type="number"
                                             step="any"
                                             value={lat}
                                             onChange={(e) => setLat(Number(e.target.value))}
+                                            className="h-7 text-xs px-2"
+                                            required
                                         />
                                     </div>
-                                    <div className="flex flex-col gap-2">
-                                        <Label htmlFor="pengaturan-lon">Longitude (Bujur)</Label>
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-muted-foreground text-[10px]">Longitude (Bujur)</span>
                                         <Input
-                                            id="pengaturan-lon"
                                             type="number"
                                             step="any"
                                             value={lon}
                                             onChange={(e) => setLon(Number(e.target.value))}
+                                            className="h-7 text-xs px-2"
+                                            required
                                         />
                                     </div>
+                                    {resolving && (
+                                        <p className="col-span-2 text-emerald-500 text-[10px] mt-1 animate-pulse flex items-center gap-1">
+                                            <Loader2 className="h-3 w-3 animate-spin" /> Menghubungi satelit geolokasi...
+                                        </p>
+                                    )}
+                                    {resolveError && !resolving && (
+                                        <p className="col-span-2 text-amber-500 text-[10px] mt-1">{resolveError}</p>
+                                    )}
                                 </div>
-                                {resolving && (
-                                    <p className="text-emerald-500 text-xs animate-pulse flex items-center gap-1">
-                                        <Loader2 className="h-3 w-3 animate-spin" /> Menghubungi satelit geolokasi...
-                                    </p>
-                                )}
-                                {resolveError && !resolving && (
-                                    <p className="text-amber-500 text-xs">{resolveError}</p>
-                                )}
                             </div>
                         </CardContent>
                     </Card>

@@ -157,7 +157,7 @@ export default function DataProyekCalculator({ project }) {
         }
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
-        
+
         router.post(`/detil-proyek/${project.id}/parameter`, {
             duration: projectLife === "" ? 1 : Number(projectLife),
             discount_rate: 10,
@@ -254,7 +254,7 @@ export default function DataProyekCalculator({ project }) {
 
             depreciation = Math.min(depreciation, bookValue)
 
-            const income = production * price
+            const income = production * 1000 * price
             const taxableIncome = income - opex - depreciation
             const tax = taxableIncome > 0 ? taxableIncome * (taxPct / 100) : 0
             const ncf = income - opex - tax
@@ -330,11 +330,7 @@ export default function DataProyekCalculator({ project }) {
         <main className="p-12">
             <header className="mb-6 flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-medium">{project?.name || "Gunung Bakaran"}</h1>
-                    <Badge variant="outline" className="gap-1">
-                        <CircleIcon className="size-3 fill-emerald-500 text-emerald-500" />
-                        Kalkulator proyek
-                    </Badge>
+                    <h1 className="text-2xl font-medium">{project?.name || ""}</h1>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                     <span>Durasi: {projectLife} tahun</span>

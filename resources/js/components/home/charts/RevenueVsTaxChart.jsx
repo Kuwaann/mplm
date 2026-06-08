@@ -1,7 +1,8 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import chartFormatRupiah from "@/utils/chartFormatRupiah"
 
 import {
     Card,
@@ -73,7 +74,14 @@ export function RevenueVsTaxChart({ data = chartData }) {
             </CardHeader>
             <CardContent className="flex-1 flex flex-col">
                 <ChartContainer config={chartConfig} className="flex-1 w-full min-h-[250px]">
-                    <BarChart accessibilityLayer data={filteredData}>
+                    <BarChart
+                        accessibilityLayer
+                        data={filteredData}
+                        margin={{
+                            left: -10,
+                            right: -10,
+                        }}
+                    >
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="tahun"
@@ -81,12 +89,32 @@ export function RevenueVsTaxChart({ data = chartData }) {
                             tickMargin={10}
                             axisLine={false}
                         />
+                        <YAxis
+                            yAxisId="left"
+                            orientation="left"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickCount={5}
+                            tickFormatter={chartFormatRupiah}
+                            width={80}
+                        />
+                        <YAxis
+                            yAxisId="right"
+                            orientation="right"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickCount={5}
+                            tickFormatter={chartFormatRupiah}
+                            width={80}
+                        />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dashed" />}
                         />
-                        <Bar dataKey="pendapatan" fill="var(--color-pendapatan)" radius={4} />
-                        <Bar dataKey="opex" fill="var(--color-opex)" radius={4} />
+                        <Bar yAxisId="left" dataKey="pendapatan" fill="var(--color-pendapatan)" radius={4} />
+                        <Bar yAxisId="right" dataKey="opex" fill="var(--color-opex)" radius={4} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>
